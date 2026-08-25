@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { label: "PPDB", href: "/ppdb" },
   { label: "Galeri", href: "/galeri" },
   { label: "Kontak", href: "/kontak" },
+  { label: "FAQ", href: "/faq" },
 ];
 
 export default function Navbar() {

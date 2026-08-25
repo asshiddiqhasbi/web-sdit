@@ -109,6 +109,11 @@ export default function Footer() {
                   <span>Hubungi Kami</span>
                 </Link>
               </li>
+              <li>
+                <Link href="/faq" className="text-slate-300 hover:text-amber-400 transition-colors flex items-center gap-1.5">
+                  <span>Pertanyaan Umum (FAQ)</span>
+                </Link>
+              </li>
             </ul>
           </div>
 
