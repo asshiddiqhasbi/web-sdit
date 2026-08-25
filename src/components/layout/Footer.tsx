@@ -3,17 +3,17 @@ import { GraduationCap, MapPin, Phone, Mail, Clock, MessageCircle } from "lucide
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-slate-900 via-emerald-950 to-slate-950 text-slate-200 pt-10 sm:pt-16 pb-6 sm:pb-8 border-t-4 border-amber-400">
+    <footer className="bg-gradient-to-b from-slate-900 via-emerald-950 to-slate-950 text-slate-200 pt-8 sm:pt-16 pb-6 sm:pb-8 border-t-4 border-amber-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 pb-8 sm:pb-12 border-b border-slate-800">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 pb-6 md:pb-12 border-b border-slate-800/60 md:border-slate-800">
           
-          {/* Column 1: School Profile & Branding */}
-          <div className="space-y-3 sm:space-y-4">
+          {/* Column 1: School Profile, Branding & Social Icons (Tampil di Mobile & Desktop) */}
+          <div className="space-y-3 sm:space-y-4 text-center md:text-left flex flex-col items-center md:items-start">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white shadow-md shrink-0">
                 <GraduationCap className="w-6 h-6 sm:w-7 sm:h-7 text-amber-300" />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col text-left">
                 <span className="font-heading font-extrabold text-lg sm:text-xl text-white tracking-tight">
                   SDIT [Nama Sekolah]
                 </span>
@@ -22,12 +22,12 @@ export default function Footer() {
                 </span>
               </div>
             </div>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-sm md:max-w-none">
               Mewujudkan generasi Rabbani yang unggul dalam Imtaq, cerdas dalam Iptek, serta berakhlak mulia dan berwawasan global.
             </p>
             
-            {/* Social Media Links (Custom SVG Icons) */}
-            <div className="flex items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
+            {/* Social Media Links (Instagram, YouTube, Facebook, WhatsApp) */}
+            <div className="flex items-center justify-center md:justify-start gap-2.5 sm:gap-3 pt-1 sm:pt-2">
               {/* Instagram */}
               <a
                 href="#"
@@ -72,8 +72,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Quick Links */}
-          <div>
+          {/* Column 2: Quick Links (Sembunyi di Mobile, Tampil di Desktop) */}
+          <div className="hidden md:block">
             <h3 className="font-heading font-bold text-sm sm:text-base text-white mb-2.5 sm:mb-4 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-400"></span>
               Navigasi Cepat
@@ -112,8 +112,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Contact Info */}
-          <div>
+          {/* Column 3: Contact Info (Sembunyi di Mobile, Tampil di Desktop) */}
+          <div className="hidden md:block">
             <h3 className="font-heading font-bold text-sm sm:text-base text-white mb-2.5 sm:mb-4 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-400"></span>
               Kontak Sekolah
@@ -138,8 +138,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Call to Action / PPDB Badge */}
-          <div className="space-y-3 sm:space-y-4 bg-emerald-900/40 p-4 sm:p-5 rounded-2xl border border-emerald-700/50">
+          {/* Column 4: Call to Action / PPDB Badge (Sembunyi di Mobile, Tampil di Desktop) */}
+          <div className="hidden md:block space-y-3 sm:space-y-4 bg-emerald-900/40 p-4 sm:p-5 rounded-2xl border border-emerald-700/50">
             <h3 className="font-heading font-bold text-sm sm:text-base text-amber-300 flex items-center gap-2">
               Pendaftaran PPDB 2026
             </h3>
@@ -157,7 +157,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar / Copyright */}
-        <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-center text-center gap-4 text-xs text-slate-400">
+        <div className="pt-4 sm:pt-8 flex flex-col sm:flex-row items-center justify-center text-center gap-4 text-xs text-slate-400">
           <p>© {new Date().getFullYear()} SDIT [Nama Sekolah]. Hak Cipta Dilindungi.</p>
         </div>
       </div>
