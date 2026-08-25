@@ -36,7 +36,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full shadow-sm bg-white/95 backdrop-blur-md transition-all">
       {/* Top Header Notification / Quick Info Bar */}
-      <div className="bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 text-white text-xs py-2 px-4">
+      <div className="hidden md:block bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 text-white text-xs py-2 px-4">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
