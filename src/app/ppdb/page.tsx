@@ -2,29 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  ChevronRight,
-  Sparkles,
-  FileText,
-  CheckCircle2,
-  UserCheck,
-  Award,
-  CreditCard,
-  Calendar,
-  DollarSign,
-  Send,
-  User,
-  Phone,
-  Mail,
-  MapPin,
-  School,
-  Check,
-  AlertCircle,
-} from "lucide-react";
-import FadeIn from "@/components/ui/FadeIn";
+import { ChevronRight, Send, Check, AlertCircle, Calendar, ArrowRight } from "lucide-react";
+
+/**
+ * Pengaturan status PPDB:
+ * Ubah ke `true` saat musim pendaftaran resmi dibuka agar formulir pendaftaran online aktif.
+ * Dalam kondisi normal/netral (`false`), halaman menampilkan panduan referensi dan formulir daftar tunggu notifikasi.
+ */
+const IS_PPDB_OPEN = false;
 
 export default function PPDBPage() {
-  // Form State
   const [formData, setFormData] = useState({
     namaSiswa: "",
     tempatLahir: "",
@@ -37,11 +24,17 @@ export default function PPDBPage() {
     asalSekolah: "",
   });
 
+  const [waitlistData, setWaitlistData] = useState({
+    namaOrangTua: "",
+    noWhatsapp: "",
+    tahunMasuk: "Tahun Ajaran 2027/2028",
+  });
+  const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Form Input Change Handler
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -52,41 +45,28 @@ export default function PPDBPage() {
     }
   };
 
-  // Form Validation Handler
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-
-    if (!formData.namaSiswa.trim()) {
-      newErrors.namaSiswa = "Nama calon siswa wajib diisi";
-    }
-    if (!formData.tempatLahir.trim()) {
-      newErrors.tempatLahir = "Tempat lahir wajib diisi";
-    }
-    if (!formData.tanggalLahir) {
-      newErrors.tanggalLahir = "Tanggal lahir wajib dipilih";
-    }
-    if (!formData.namaOrangTua.trim()) {
-      newErrors.namaOrangTua = "Nama orang tua/wali wajib diisi";
-    }
+    if (!formData.namaSiswa.trim()) newErrors.namaSiswa = "Nama calon siswa wajib diisi";
+    if (!formData.tempatLahir.trim()) newErrors.tempatLahir = "Tempat lahir wajib diisi";
+    if (!formData.tanggalLahir) newErrors.tanggalLahir = "Tanggal lahir wajib dipilih";
+    if (!formData.namaOrangTua.trim()) newErrors.namaOrangTua = "Nama orang tua/wali wajib diisi";
     if (!formData.noWhatsapp.trim()) {
       newErrors.noWhatsapp = "Nomor WhatsApp wajib diisi";
-    } else if (!/^[0-9+--\s]{9,15}$/.test(formData.noWhatsapp)) {
-      newErrors.noWhatsapp = "Format nomor WhatsApp tidak valid (minimal 9-15 digit)";
+    } else if (!/^[0-9+\-\s]{9,15}$/.test(formData.noWhatsapp)) {
+      newErrors.noWhatsapp = "Format nomor WhatsApp tidak valid";
     }
     if (!formData.email.trim()) {
       newErrors.email = "Email wajib diisi";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Format email tidak valid";
     }
-    if (!formData.alamat.trim()) {
-      newErrors.alamat = "Alamat lengkap wajib diisi";
-    }
+    if (!formData.alamat.trim()) newErrors.alamat = "Alamat lengkap wajib diisi";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Submit Handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -95,7 +75,7 @@ export default function PPDBPage() {
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-    }, 1200);
+    }, 900);
   };
 
   const handleReset = () => {
@@ -114,591 +94,453 @@ export default function PPDBPage() {
     setIsSubmitted(false);
   };
 
-  return (
-    <div className="space-y-10 sm:space-y-16 pb-10 sm:pb-16">
-      
-      {/* ---------------------------------------------------- */}
-      {/* 1. HEADER HALAMAN & BREADCRUMB */}
-      {/* ---------------------------------------------------- */}
-      <section className="bg-gradient-to-r from-emerald-900 via-teal-900 to-emerald-950 text-white py-8 sm:py-12 px-4 sm:px-6 lg:px-8 shape-curve-bottom relative overflow-hidden">
-        <div className="absolute top-0 right-1/4 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute inset-0 bg-islamic-pattern opacity-25"></div>
+  const handleWaitlistSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!waitlistData.namaOrangTua.trim() || !waitlistData.noWhatsapp.trim()) return;
+    setWaitlistSubmitted(true);
+  };
 
-        <div className="relative max-w-7xl mx-auto space-y-3 sm:space-y-4 text-center">
-          <FadeIn direction="up">
-            {/* Breadcrumb */}
-            <nav className="flex justify-center items-center gap-2 text-xs font-semibold text-emerald-200 mb-2">
-              <Link href="/" className="hover:text-amber-300 transition-colors">
+  const steps = [
+    { num: "01", title: "Pengisian Formulir", desc: "Melengkapi data calon siswa secara online maupun langsung di sekretariat." },
+    { num: "02", title: "Verifikasi Berkas", desc: "Pemeriksaan akta kelahiran, kartu keluarga, dan kelengkapan dokumen." },
+    { num: "03", title: "Observasi Anak", desc: "Pemetaan kesiapan belajar anak yang santai serta silaturahmi orang tua." },
+    { num: "04", title: "Pengumuman Hasil", desc: "Penyampaian hasil seleksi secara resmi oleh panitia kepada orang tua." },
+    { num: "05", title: "Daftar Ulang", desc: "Penyelesaian administrasi awal serta pengukuran seragam sekolah." },
+  ];
+
+  return (
+    <div className="space-y-10 sm:space-y-14 pb-12 sm:pb-16">
+      
+      {/* Editorial Header */}
+      <section className="pt-6 sm:pt-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <div className="border-b border-sand/80 pb-6 sm:pb-8 space-y-4">
+            <nav className="flex items-center gap-2 text-xs font-sans text-charcoal-muted">
+              <Link href="/" className="hover:text-forest transition-colors">
                 Beranda
               </Link>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-              <span className="text-amber-300">PPDB Online</span>
+              <ChevronRight className="w-3.5 h-3.5 text-sand-dark" />
+              <span className="text-forest font-semibold">PPDB</span>
             </nav>
 
-            {/* Title & Subtitle */}
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-400 text-emerald-950 text-xs font-bold shadow-sm">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Tahun Ajaran 2026 / 2027</span>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-end">
+              <div className="lg:col-span-7 space-y-2">
+                <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                  Informasi Admisi Sekolah
+                </span>
+                <h1 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-bold text-forest leading-tight mt-1">
+                  Penerimaan Peserta Didik Baru (PPDB)
+                </h1>
               </div>
-              <h1 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white">
-                Penerimaan Peserta Didik Baru (PPDB)
-              </h1>
-              <p className="text-slate-200 text-xs sm:text-base max-w-2xl mx-auto pt-1">
-                Selamat datang calon orang tua murid! Mari bergabung dengan keluarga besar SDIT [Nama Sekolah] untuk mendidik putra-putri tercinta menjadi generasi Rabbani yang unggul dan cerdas.
-              </p>
+              <div className="lg:col-span-5">
+                <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
+                  Panduan resmi mengenai jalur penerimaan, persyaratan dokumen, tahapan seleksi, serta rincian estimasi biaya pendidikan di SDIT [Nama Sekolah].
+                </p>
+              </div>
             </div>
-          </FadeIn>
+          </div>
+
+          {/* Seasonal Status Notice */}
+          {!IS_PPDB_OPEN && (
+            <div className="bg-sand-light/80 border-l-4 border-gold p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1 max-w-3xl">
+                <div className="flex items-center gap-2 text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                  <Calendar className="w-4 h-4 text-gold" />
+                  <span>Status Saat Ini: Di Luar Masa Pendaftaran Aktif</span>
+                </div>
+                <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
+                  Penerimaan peserta didik baru SDIT [Nama Sekolah] dibuka secara berkala setiap bulan November hingga April. Informasi ketentuan dan estimasi biaya di bawah ini tetap dapat digunakan orang tua sebagai panduan persiapan awal.
+                </p>
+              </div>
+              <a
+                href="#informasi-ppdb"
+                className="inline-flex items-center gap-2 px-4 py-2.5 font-sans font-semibold text-xs text-forest border border-forest/30 bg-ivory hover:bg-sand/40 transition-colors shrink-0"
+              >
+                <span>Titip Kontak Informasi</span>
+                <ArrowRight className="w-3.5 h-3.5 text-gold" />
+              </a>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* ---------------------------------------------------- */}
-      {/* 2. INFO PENERIMAAN */}
-      {/* ---------------------------------------------------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
-        <FadeIn direction="up">
-          <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10">
-            <span className="inline-block text-xs font-bold tracking-widest text-emerald-700 uppercase bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/60 mb-3.5">
-              Informasi Pendaftaran
-            </span>
-            <h2 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900">
-              Ketentuan & Biaya PPDB
-            </h2>
-          </div>
-        </FadeIn>
+      {/* Panduan Jalur, Syarat, Jadwal Umum & Estimasi Biaya */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="border-b border-sand/80 pb-3">
+          <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+            Panduan Referensi
+          </span>
+          <h2 className="font-heading text-xl sm:text-3xl font-bold text-forest mt-0.5">
+            Ketentuan & Estimasi Biaya Pendidikan
+          </h2>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-sand divide-y md:divide-y-0 md:divide-x divide-sand bg-ivory-light">
           
-          {/* Card 1 */}
-          <FadeIn direction="up" delay={0.1}>
-            <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4 h-full">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
-                <Award className="w-6 h-6" />
-              </div>
-              <h3 className="font-heading font-bold text-lg text-slate-900">
-                Jalur Pendaftaran
-              </h3>
-              <ul className="space-y-2 text-xs text-slate-600">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                  <span><strong>Jalur Reguler:</strong> Terbuka untuk umum calon siswa lulusan TK/PAUD.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                  <span><strong>Jalur Prestasi:</strong> Bebas tes untuk hafalan Al-Qur'an (Min. 1 Juz) / Prestasi Sains.</span>
-                </li>
-              </ul>
-            </div>
-          </FadeIn>
+          <div className="p-6 space-y-3">
+            <span className="font-heading text-sm font-bold text-gold">01</span>
+            <h3 className="font-heading font-bold text-lg text-forest">Jalur Penerimaan</h3>
+            <ul className="space-y-2.5 text-xs font-sans text-charcoal-muted leading-relaxed">
+              <li>
+                <strong className="text-forest block">Jalur Reguler</strong>
+                Terbuka untuk calon siswa lulusan TK/PAUD maupun dari pengasuhan keluarga.
+              </li>
+              <li>
+                <strong className="text-forest block">Jalur Prestasi Tahfidz</strong>
+                Apresiasi khusus bagi calon siswa yang memiliki hafalan Al-Qur'an minimal 1 Juz.
+              </li>
+            </ul>
+          </div>
 
-          {/* Card 2 */}
-          <FadeIn direction="up" delay={0.2}>
-            <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4 h-full">
-              <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
-                <FileText className="w-6 h-6" />
-              </div>
-              <h3 className="font-heading font-bold text-lg text-slate-900">
-                Syarat Berkas
-              </h3>
-              <ul className="space-y-1.5 text-xs text-slate-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Usia minimal 6 tahun per Juli 2026</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>FC Akta Kelahiran (2 Lembar)</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>FC Kartu Keluarga (2 Lembar)</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Pasfoto 3x4 berwarna (4 Lembar)</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>FC Ijazah TK/PAUD (Jika ada)</span>
-                </li>
-              </ul>
-            </div>
-          </FadeIn>
+          <div className="p-6 space-y-3">
+            <span className="font-heading text-sm font-bold text-gold">02</span>
+            <h3 className="font-heading font-bold text-lg text-forest">Syarat Dokumen</h3>
+            <ul className="space-y-2 text-xs font-sans text-charcoal-muted">
+              <li>Usia minimal 6 tahun pada bulan Juli</li>
+              <li>Fotokopi Akta Kelahiran (2 lembar)</li>
+              <li>Fotokopi Kartu Keluarga (2 lembar)</li>
+              <li>Fotokopi KTP Orang Tua (1 lembar)</li>
+              <li>Pasfoto berwarna 3x4 (4 lembar)</li>
+              <li>Surat keterangan TK/PAUD (jika ada)</li>
+            </ul>
+          </div>
 
-          {/* Card 3 */}
-          <FadeIn direction="up" delay={0.3}>
-            <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4 h-full">
-              <div className="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold">
-                <Calendar className="w-6 h-6" />
+          <div className="p-6 space-y-3">
+            <span className="font-heading text-sm font-bold text-gold">03</span>
+            <h3 className="font-heading font-bold text-lg text-forest">Periode Umum</h3>
+            <div className="space-y-3 text-xs font-sans text-charcoal-muted">
+              <div>
+                <p className="font-semibold text-forest">Gelombang 1 (Awal)</p>
+                <p>November s.d. Januari setiap tahun ajaran</p>
               </div>
-              <h3 className="font-heading font-bold text-lg text-slate-900">
-                Jadwal Gelombang
-              </h3>
-              <div className="space-y-3 text-xs">
-                <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-100">
-                  <p className="font-bold text-emerald-900">Gelombang 1 (Early Bird)</p>
-                  <p className="text-slate-600">1 Nov 2025 - 31 Jan 2026</p>
-                  <span className="text-[10px] text-emerald-700 font-semibold">Diskon Biaya Masuk 15%</span>
-                </div>
-                <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                  <p className="font-bold text-slate-900">Gelombang 2 (Reguler)</p>
-                  <p className="text-slate-600">1 Feb 2026 - 30 Apr 2026</p>
-                </div>
+              <div className="pt-2 border-t border-sand/60">
+                <p className="font-semibold text-forest">Gelombang 2 (Reguler)</p>
+                <p>Februari s.d. April (selama kuota kelas tersedia)</p>
               </div>
             </div>
-          </FadeIn>
+          </div>
 
-          {/* Card 4 */}
-          <FadeIn direction="up" delay={0.4}>
-            <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4 h-full">
-              <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold">
-                <DollarSign className="w-6 h-6" />
-              </div>
-              <h3 className="font-heading font-bold text-lg text-slate-900">
-                Estimasi Biaya
-              </h3>
-              <ul className="space-y-2 text-xs text-slate-600">
-                <li className="flex justify-between border-b border-slate-100 pb-1">
-                  <span>Formulir & Tes</span>
-                  <span className="font-bold text-slate-900">Rp 350.000</span>
-                </li>
-                <li className="flex justify-between border-b border-slate-100 pb-1">
-                  <span>Uang Pangkal</span>
-                  <span className="font-bold text-slate-900">Rp 8.500.000</span>
-                </li>
-                <li className="flex justify-between">
-                  <span>SPP Bulanan</span>
-                  <span className="font-bold text-emerald-700">Rp 650.000/bln</span>
-                </li>
-              </ul>
-            </div>
-          </FadeIn>
+          <div className="p-6 space-y-3">
+            <span className="font-heading text-sm font-bold text-gold">04</span>
+            <h3 className="font-heading font-bold text-lg text-forest">Estimasi Biaya</h3>
+            <ul className="space-y-2.5 text-xs font-sans text-charcoal-muted">
+              <li className="flex justify-between border-b border-sand/60 pb-1.5">
+                <span>Formulir & Observasi</span>
+                <span className="font-semibold text-forest">Rp 350.000</span>
+              </li>
+              <li className="flex justify-between border-b border-sand/60 pb-1.5">
+                <span>Uang Pangkal</span>
+                <span className="font-semibold text-forest">Rp 8.500.000</span>
+              </li>
+              <li className="flex justify-between">
+                <span>SPP Bulanan</span>
+                <span className="font-semibold text-forest">Rp 650.000</span>
+              </li>
+            </ul>
+            <p className="text-[11px] font-sans text-charcoal-muted/80 pt-1">
+              Rincian resmi mengikuti ketetapan yayasan pada tahun ajaran terkait.
+            </p>
+          </div>
 
         </div>
       </section>
 
-      {/* ---------------------------------------------------- */}
-      {/* 3. ALUR PENDAFTARAN */}
-      {/* ---------------------------------------------------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <FadeIn direction="up">
-          <div className="bg-gradient-to-br from-emerald-50 via-teal-50/40 to-slate-50 p-8 sm:p-12 rounded-3xl border border-emerald-100 space-y-10">
-            
-            <div className="text-center max-w-2xl mx-auto">
-              <span className="inline-block text-xs font-bold tracking-widest text-emerald-700 uppercase bg-white px-3.5 py-1.5 rounded-full border border-emerald-200 mb-3.5">
-                Langkah Pendaftaran
-              </span>
-              <h2 className="font-heading text-3xl font-extrabold text-slate-900 mb-2">
-                Alur Pendaftaran PPDB
-              </h2>
-              <p className="text-slate-600 text-sm">
-                5 Tahap mudah mendaftarkan calon siswa secara transparan dan cepat.
+      {/* Alur Pendaftaran (5 Steps Editorial Strip) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="border-b border-sand/80 pb-3">
+          <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+            Tahapan
+          </span>
+          <h2 className="font-heading text-xl sm:text-3xl font-bold text-forest mt-0.5">
+            Alur Pendaftaran Siswa Baru
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          {steps.map((step) => (
+            <div key={step.num} className="border-t-2 border-forest pt-4 space-y-2">
+              <span className="font-heading text-base font-bold text-gold">{step.num}</span>
+              <h3 className="font-heading font-bold text-base text-forest">{step.title}</h3>
+              <p className="font-sans text-xs text-charcoal-muted leading-relaxed">
+                {step.desc}
               </p>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-              
-              {/* Step 1 */}
-              <FadeIn direction="up" delay={0.1}>
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-3 relative text-center group hover:shadow-md transition-shadow h-full">
-                  <div className="w-10 h-10 mx-auto rounded-full bg-emerald-600 text-white font-heading font-extrabold text-sm flex items-center justify-center shadow-sm">
-                    1
-                  </div>
-                  <div className="w-10 h-10 mx-auto rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-heading font-bold text-sm text-slate-900">Isi Form Online</h3>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Melengkapi biodata calon siswa dan orang tua di form formulir online di bawah ini.
-                  </p>
-                </div>
-              </FadeIn>
-
-              {/* Step 2 */}
-              <FadeIn direction="up" delay={0.2}>
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-3 relative text-center group hover:shadow-md transition-shadow h-full">
-                  <div className="w-10 h-10 mx-auto rounded-full bg-emerald-600 text-white font-heading font-extrabold text-sm flex items-center justify-center shadow-sm">
-                    2
-                  </div>
-                  <div className="w-10 h-10 mx-auto rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center">
-                    <CheckCircle2 className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-heading font-bold text-sm text-slate-900">Verifikasi Berkas</h3>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Panitia melakukan konfirmasi data dan pemeriksaan dokumen persyaratan.
-                  </p>
-                </div>
-              </FadeIn>
-
-              {/* Step 3 */}
-              <FadeIn direction="up" delay={0.3}>
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-3 relative text-center group hover:shadow-md transition-shadow h-full">
-                  <div className="w-10 h-10 mx-auto rounded-full bg-amber-500 text-emerald-950 font-heading font-extrabold text-sm flex items-center justify-center shadow-sm">
-                    3
-                  </div>
-                  <div className="w-10 h-10 mx-auto rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center">
-                    <UserCheck className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-heading font-bold text-sm text-slate-900">Observasi Siswa</h3>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Pemetaan bakat, kesiapan belajar anak, dan wawancara singkat dengan orang tua.
-                  </p>
-                </div>
-              </FadeIn>
-
-              {/* Step 4 */}
-              <FadeIn direction="up" delay={0.4}>
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-3 relative text-center group hover:shadow-md transition-shadow h-full">
-                  <div className="w-10 h-10 mx-auto rounded-full bg-emerald-600 text-white font-heading font-extrabold text-sm flex items-center justify-center shadow-sm">
-                    4
-                  </div>
-                  <div className="w-10 h-10 mx-auto rounded-xl bg-orange-50 text-orange-700 flex items-center justify-center">
-                    <Award className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-heading font-bold text-sm text-slate-900">Pengumuman</h3>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Pengumuman hasil observasi kelulusan disampaikan via WhatsApp resmi.
-                  </p>
-                </div>
-              </FadeIn>
-
-              {/* Step 5 */}
-              <FadeIn direction="up" delay={0.5}>
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-3 relative text-center group hover:shadow-md transition-shadow h-full">
-                  <div className="w-10 h-10 mx-auto rounded-full bg-teal-600 text-white font-heading font-extrabold text-sm flex items-center justify-center shadow-sm">
-                    5
-                  </div>
-                  <div className="w-10 h-10 mx-auto rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                    <CreditCard className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-heading font-bold text-sm text-slate-900">Daftar Ulang</h3>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Konfirmasi pendaftaran ulang & pengambilan seragam sekolah.
-                  </p>
-                </div>
-              </FadeIn>
-
-            </div>
-          </div>
-        </FadeIn>
+          ))}
+        </div>
       </section>
 
-      {/* ---------------------------------------------------- */}
-      {/* 4. FORM PENDAFTARAN ONLINE */}
-      {/* ---------------------------------------------------- */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <FadeIn direction="up">
-          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-lg p-6 sm:p-10 space-y-8">
-            
-            <div className="text-center space-y-2 border-b border-slate-100 pb-6">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold mb-1">
-                <FileText className="w-3.5 h-3.5 text-emerald-700" />
-                <span>Formulir Resmi</span>
+      {/* Form Section: Waitlist saat tutup vs Full Registration saat buka */}
+      <section id="informasi-ppdb" className="bg-sand-light/60 border-y border-sand py-10 sm:py-14 scroll-mt-24">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {IS_PPDB_OPEN ? (
+            <div className="bg-ivory border border-sand p-6 sm:p-10 space-y-6">
+              <div className="border-b border-sand pb-4 space-y-1">
+                <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                  Formulir Resmi
+                </span>
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-forest">
+                  Formulir Pendaftaran Online
+                </h2>
+                <p className="text-xs sm:text-sm font-sans text-charcoal-muted">
+                  Silakan lengkapi data calon siswa di bawah ini dengan benar.
+                </p>
               </div>
-              <h2 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900">
-                Formulir Pendaftaran Online
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600">
-                Silakan isi formulir di bawah ini dengan data yang sebenar-benarnya.
-              </p>
-            </div>
 
-            {/* Success State Notification Card */}
-            {isSubmitted ? (
-              <div className="bg-emerald-50 border-2 border-emerald-500/80 rounded-2xl p-8 text-center space-y-4 animate-in fade-in zoom-in duration-300">
-                <div className="w-16 h-16 mx-auto rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-md">
-                  <Check className="w-8 h-8" />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="font-heading font-extrabold text-2xl text-emerald-950">
-                    Pendaftaran Berhasil Dikirim!
+              {isSubmitted ? (
+                <div className="py-8 text-center space-y-4">
+                  <div className="w-12 h-12 mx-auto bg-forest text-gold flex items-center justify-center">
+                    <Check className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-heading font-bold text-xl text-forest">
+                    Pendaftaran Berhasil Dikirim
                   </h3>
-                  <p className="text-sm text-slate-700 max-w-lg mx-auto leading-relaxed">
-                    Jazakumullah Khairan Katsiran! Data pendaftaran ananda <strong>{formData.namaSiswa}</strong> telah tersimpan dalam sistem panitia PPDB SDIT [Nama Sekolah].
+                  <p className="text-xs sm:text-sm font-sans text-charcoal-muted max-w-lg mx-auto leading-relaxed">
+                    Data pendaftaran ananda <strong>{formData.namaSiswa}</strong> telah tercatat. Panitia akan menghubungi Bapak/Ibu <strong>{formData.namaOrangTua}</strong> melalui WhatsApp ({formData.noWhatsapp}).
                   </p>
-                  <p className="text-xs text-emerald-800 font-semibold pt-2">
-                    Tim Panitia kami akan menghubungi Bapak/Ibu <strong>{formData.namaOrangTua}</strong> melalui WhatsApp (<strong>{formData.noWhatsapp}</strong>) dalam kurun waktu 1x24 jam.
-                  </p>
-                </div>
-
-                <div className="pt-4">
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="px-6 py-2.5 rounded-full font-heading font-bold text-xs text-emerald-950 bg-amber-400 hover:bg-amber-300 transition-colors shadow-sm cursor-pointer"
+                    className="px-6 py-2.5 font-sans font-semibold text-xs uppercase tracking-wider text-forest border border-forest/30 hover:bg-sand/40 cursor-pointer"
                   >
-                    Isi Formulir Baru Lagi
+                    Isi Formulir Lain
                   </button>
                 </div>
-              </div>
-            ) : (
-              /* Interactive Form */
-              <form onSubmit={handleSubmit} className="space-y-6">
-                
-                {/* Field 1: Nama Siswa */}
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Nama Lengkap Calon Siswa <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                      Nama Lengkap Calon Siswa <span className="text-red-600">*</span>
+                    </label>
                     <input
                       type="text"
                       name="namaSiswa"
                       value={formData.namaSiswa}
                       onChange={handleChange}
                       placeholder="Contoh: Muhammad Al-Fatih"
-                      className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                        errors.namaSiswa
-                          ? "border-red-400 bg-red-50/50 focus:border-red-500"
-                          : "border-slate-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
+                      className={`w-full px-3.5 py-2.5 border bg-ivory-light text-sm font-sans focus:outline-none ${
+                        errors.namaSiswa ? "border-red-500" : "border-sand focus:border-forest"
                       }`}
                     />
-                  </div>
-                  {errors.namaSiswa && (
-                    <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                      <AlertCircle className="w-3 h-3" /> {errors.namaSiswa}
-                    </p>
-                  )}
-                </div>
-
-                {/* Grid 2 cols: Tempat, Tanggal Lahir */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  
-                  {/* Tempat Lahir */}
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                      Tempat Lahir <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="tempatLahir"
-                      value={formData.tempatLahir}
-                      onChange={handleChange}
-                      placeholder="Contoh: Jakarta"
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                        errors.tempatLahir
-                          ? "border-red-400 bg-red-50/50 focus:border-red-500"
-                          : "border-slate-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
-                      }`}
-                    />
-                    {errors.tempatLahir && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.tempatLahir}
+                    {errors.namaSiswa && (
+                      <p className="text-xs text-red-600 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" /> {errors.namaSiswa}
                       </p>
                     )}
                   </div>
 
-                  {/* Tanggal Lahir */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                        Tempat Lahir <span className="text-red-600">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="tempatLahir"
+                        value={formData.tempatLahir}
+                        onChange={handleChange}
+                        placeholder="Contoh: Bandung"
+                        className={`w-full px-3.5 py-2.5 border bg-ivory-light text-sm font-sans focus:outline-none ${
+                          errors.tempatLahir ? "border-red-500" : "border-sand focus:border-forest"
+                        }`}
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                        Tanggal Lahir <span className="text-red-600">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        name="tanggalLahir"
+                        value={formData.tanggalLahir}
+                        onChange={handleChange}
+                        className={`w-full px-3.5 py-2.5 border bg-ivory-light text-sm font-sans focus:outline-none ${
+                          errors.tanggalLahir ? "border-red-500" : "border-sand focus:border-forest"
+                        }`}
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                      Tanggal Lahir <span className="text-red-500">*</span>
+                    <label className="block text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                      Nama Orang Tua / Wali <span className="text-red-600">*</span>
                     </label>
-                    <input
-                      type="date"
-                      name="tanggalLahir"
-                      value={formData.tanggalLahir}
-                      onChange={handleChange}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                        errors.tanggalLahir
-                          ? "border-red-400 bg-red-50/50 focus:border-red-500"
-                          : "border-slate-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
-                      }`}
-                    />
-                    {errors.tanggalLahir && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.tanggalLahir}
-                      </p>
-                    )}
-                  </div>
-
-                </div>
-
-                {/* Jenis Kelamin (Radio Button) */}
-                <div className="space-y-2">
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Jenis Kelamin <span className="text-red-500">*</span>
-                  </label>
-                  <div className="flex items-center gap-6 text-sm">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="jenisKelamin"
-                        value="Laki-laki"
-                        checked={formData.jenisKelamin === "Laki-laki"}
-                        onChange={handleChange}
-                        className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
-                      />
-                      <span className="text-slate-700 font-medium">Laki-laki</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="jenisKelamin"
-                        value="Perempuan"
-                        checked={formData.jenisKelamin === "Perempuan"}
-                        onChange={handleChange}
-                        className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
-                      />
-                      <span className="text-slate-700 font-medium">Perempuan</span>
-                    </label>
-                  </div>
-                </div>
-
-                {/* Nama Orang Tua */}
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Nama Orang Tua / Wali <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                     <input
                       type="text"
                       name="namaOrangTua"
                       value={formData.namaOrangTua}
                       onChange={handleChange}
-                      placeholder="Contoh: H. Ahmad Subardjo"
-                      className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                        errors.namaOrangTua
-                          ? "border-red-400 bg-red-50/50 focus:border-red-500"
-                          : "border-slate-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
+                      placeholder="Nama orang tua atau wali"
+                      className={`w-full px-3.5 py-2.5 border bg-ivory-light text-sm font-sans focus:outline-none ${
+                        errors.namaOrangTua ? "border-red-500" : "border-sand focus:border-forest"
                       }`}
                     />
                   </div>
-                  {errors.namaOrangTua && (
-                    <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                      <AlertCircle className="w-3 h-3" /> {errors.namaOrangTua}
-                    </p>
-                  )}
-                </div>
 
-                {/* Grid 2 cols: Nomor WhatsApp & Email */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  
-                  {/* No WhatsApp */}
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                      Nomor WhatsApp Aktif <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                        Nomor WhatsApp <span className="text-red-600">*</span>
+                      </label>
                       <input
                         type="tel"
                         name="noWhatsapp"
                         value={formData.noWhatsapp}
                         onChange={handleChange}
-                        placeholder="Contoh: 081234567890"
-                        className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                          errors.noWhatsapp
-                            ? "border-red-400 bg-red-50/50 focus:border-red-500"
-                            : "border-slate-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
+                        placeholder="081234567890"
+                        className={`w-full px-3.5 py-2.5 border bg-ivory-light text-sm font-sans focus:outline-none ${
+                          errors.noWhatsapp ? "border-red-500" : "border-sand focus:border-forest"
                         }`}
                       />
                     </div>
-                    {errors.noWhatsapp && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.noWhatsapp}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Email */}
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                      Email Aktif <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                        Email <span className="text-red-600">*</span>
+                      </label>
                       <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="Contoh: orangtua@gmail.com"
-                        className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                          errors.email
-                            ? "border-red-400 bg-red-50/50 focus:border-red-500"
-                            : "border-slate-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
+                        placeholder="orangtua@email.com"
+                        className={`w-full px-3.5 py-2.5 border bg-ivory-light text-sm font-sans focus:outline-none ${
+                          errors.email ? "border-red-500" : "border-sand focus:border-forest"
                         }`}
                       />
                     </div>
-                    {errors.email && (
-                      <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.email}
-                      </p>
-                    )}
                   </div>
 
-                </div>
-
-                {/* Alamat Lengkap */}
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Alamat Lengkap Tempat Tinggal <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                      Alamat Lengkap <span className="text-red-600">*</span>
+                    </label>
                     <textarea
                       name="alamat"
                       rows={3}
                       value={formData.alamat}
                       onChange={handleChange}
-                      placeholder="Contoh: Jl. Merdeka No. 45, RT 02/RW 05, Kelurahan Mulia"
-                      className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm focus:outline-none transition-colors ${
-                        errors.alamat
-                          ? "border-red-400 bg-red-50/50 focus:border-red-500"
-                          : "border-slate-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
+                      placeholder="Alamat tempat tinggal saat ini"
+                      className={`w-full p-3.5 border bg-ivory-light text-sm font-sans focus:outline-none ${
+                        errors.alamat ? "border-red-500" : "border-sand focus:border-forest"
                       }`}
                     ></textarea>
                   </div>
-                  {errors.alamat && (
-                    <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                      <AlertCircle className="w-3 h-3" /> {errors.alamat}
-                    </p>
-                  )}
-                </div>
 
-                {/* Asal TK/PAUD (Opsional) */}
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Asal TK / PAUD <span className="text-slate-400 font-normal">(Opsional)</span>
-                  </label>
-                  <div className="relative">
-                    <School className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-                    <input
-                      type="text"
-                      name="asalSekolah"
-                      value={formData.asalSekolah}
-                      onChange={handleChange}
-                      placeholder="Contoh: TK Islam An-Nur"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                {/* Submit Button */}
-                <div className="pt-4">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-heading font-extrabold text-base text-emerald-950 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 hover:from-amber-300 hover:to-amber-400 shadow-lg hover:shadow-xl transition-all disabled:opacity-50 cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 px-7 py-3 font-sans font-semibold text-xs uppercase tracking-wider text-ivory bg-forest hover:bg-forest-light transition-colors cursor-pointer"
                   >
-                    {isSubmitting ? (
-                      <span>Mengirim Pendaftaran...</span>
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5" />
-                        <span>Kirim Formulir Pendaftaran</span>
-                      </>
-                    )}
+                    <Send className="w-3.5 h-3.5 text-gold" />
+                    <span>{isSubmitting ? "Mengirim..." : "Kirim Formulir Pendaftaran"}</span>
                   </button>
+                </form>
+              )}
+            </div>
+          ) : (
+            <div className="bg-ivory border border-sand p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              <div className="lg:col-span-5 space-y-3">
+                <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                  Pemberitahuan Pembukaan
+                </span>
+                <h2 className="font-heading text-2xl font-bold text-forest leading-snug">
+                  Daftar Tunggu Informasi PPDB
+                </h2>
+                <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
+                  Karena pendaftaran sedang ditutup, orang tua dapat meninggalkan kontak agar sekretariat dapat mengirimkan informasi saat gelombang pendaftaran berikutnya dibuka, atau langsung menjadwalkan kunjungan sekolah.
+                </p>
+                <div className="pt-1">
+                  <Link
+                    href="/kontak"
+                    className="inline-flex items-center gap-2 text-xs font-sans font-bold text-forest hover:text-gold transition-colors"
+                  >
+                    <span>Atau hubungi sekretariat langsung</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-gold" />
+                  </Link>
                 </div>
+              </div>
 
-              </form>
-            )}
+              <div className="lg:col-span-7">
+                {waitlistSubmitted ? (
+                  <div className="border border-sand bg-sand-light/40 p-6 text-center space-y-3">
+                    <div className="w-10 h-10 mx-auto bg-forest text-gold flex items-center justify-center">
+                      <Check className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-heading font-bold text-lg text-forest">
+                      Kontak Berhasil Dicatat
+                    </h3>
+                    <p className="font-sans text-xs text-charcoal-muted">
+                      Terima kasih, <strong>{waitlistData.namaOrangTua}</strong>. Kami akan mengabari via WhatsApp ({waitlistData.noWhatsapp}) saat PPDB dibuka.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setWaitlistData({ namaOrangTua: "", noWhatsapp: "", tahunMasuk: "Tahun Ajaran 2027/2028" });
+                        setWaitlistSubmitted(false);
+                      }}
+                      className="text-xs font-sans font-semibold text-forest underline cursor-pointer"
+                    >
+                      Catat kontak lain
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleWaitlistSubmit} className="space-y-4">
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                        Nama Orang Tua / Wali <span className="text-red-600">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={waitlistData.namaOrangTua}
+                        onChange={(e) => setWaitlistData((prev) => ({ ...prev, namaOrangTua: e.target.value }))}
+                        placeholder="Contoh: Ibu Siti Aisyah"
+                        className="w-full px-3.5 py-2.5 border border-sand bg-ivory-light text-xs sm:text-sm font-sans focus:outline-none focus:border-forest"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                          Nomor WhatsApp <span className="text-red-600">*</span>
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          value={waitlistData.noWhatsapp}
+                          onChange={(e) => setWaitlistData((prev) => ({ ...prev, noWhatsapp: e.target.value }))}
+                          placeholder="081234567890"
+                          className="w-full px-3.5 py-2.5 border border-sand bg-ivory-light text-xs sm:text-sm font-sans focus:outline-none focus:border-forest"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-sans font-bold text-forest uppercase tracking-wider">
+                          Rencana Tahun Masuk
+                        </label>
+                        <select
+                          value={waitlistData.tahunMasuk}
+                          onChange={(e) => setWaitlistData((prev) => ({ ...prev, tahunMasuk: e.target.value }))}
+                          className="w-full px-3.5 py-2.5 border border-sand bg-ivory-light text-xs sm:text-sm font-sans focus:outline-none focus:border-forest"
+                        >
+                          <option>Tahun Ajaran 2027/2028</option>
+                          <option>Tahun Ajaran 2028/2029</option>
+                          <option>Pindahan / Mutasi Siswa</option>
+                        </select>
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 font-sans font-semibold text-xs uppercase tracking-wider text-ivory bg-forest hover:bg-forest-light transition-colors cursor-pointer"
+                    >
+                      <span>Simpan untuk Pemberitahuan PPDB</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-gold" />
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          )}
 
-          </div>
-        </FadeIn>
+        </div>
       </section>
 
     </div>

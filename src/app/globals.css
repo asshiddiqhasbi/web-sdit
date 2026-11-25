@@ -1,42 +1,52 @@
 @import "tailwindcss";
 
 @theme {
-  --font-heading: var(--font-heading), 'Plus Jakarta Sans', sans-serif;
-  --font-body: var(--font-body), 'Inter', sans-serif;
+  --font-heading: var(--font-heading), 'Lora', serif;
+  --font-sans: var(--font-sans), 'Plus Jakarta Sans', sans-serif;
+  --font-serif: var(--font-heading), 'Lora', serif;
 
-  /* Primary Color: Hijau Tosca / Emerald Segar */
-  --color-primary-50: #f0fdf4;
-  --color-primary-100: #dcfce7;
-  --color-primary-200: #bbf7d0;
-  --color-primary-300: #86efac;
-  --color-primary-400: #4ade80;
-  --color-primary-500: #10b981;
-  --color-primary-600: #059669;
-  --color-primary-700: #047857;
-  --color-primary-800: #065f46;
-  --color-primary-900: #064e3b;
+  /* Forest Editorial Core Palette */
+  --color-forest: #173F35;
+  --color-forest-dark: #0f2822;
+  --color-forest-light: #235548;
 
-  /* Tosca Secondary */
-  --color-tosca-50: #f0fdfa;
-  --color-tosca-100: #ccfbf1;
-  --color-tosca-500: #14b8a6;
-  --color-tosca-600: #0d9488;
-  --color-tosca-700: #0f766e;
+  --color-sage: #315C4C;
+  --color-sage-light: #447764;
+  --color-sage-soft: #e3ebe6;
 
-  /* Accent Color: Emas / Kuning Keemasan */
-  --color-accent-gold: #f59e0b;
-  --color-accent-gold-dark: #d97706;
-  --color-accent-gold-light: #fef3c7;
+  --color-ivory: #F5F2E9;
+  --color-ivory-light: #FAF8F4;
+  --color-ivory-dark: #EAE4D5;
 
-  /* Cheerful Color: Oranye & Kuning Cerah Lembut */
-  --color-cheerful-orange: #f97316;
-  --color-cheerful-orange-light: #ffedd5;
-  --color-cheerful-yellow: #eab308;
-  --color-cheerful-yellow-light: #fef08a;
+  --color-sand: #D9CBB5;
+  --color-sand-light: #EBE3D5;
+  --color-sand-dark: #BAA88F;
 
-  /* Neutral Surface */
-  --color-surface-soft: #f8fafc;
-  --color-surface-card: #ffffff;
+  --color-gold: #C58B43;
+  --color-gold-light: #DEAA69;
+  --color-gold-dark: #9F6927;
+
+  --color-charcoal: #192421;
+  --color-charcoal-muted: #53625D;
+
+  /* Backward compatibility bridges for existing pages during migration */
+  --color-primary-50: #f4f7f5;
+  --color-primary-100: #e4ebe7;
+  --color-primary-200: #cbd8cf;
+  --color-primary-300: #a1b8a9;
+  --color-primary-400: #6d937c;
+  --color-primary-500: #315C4C;
+  --color-primary-600: #173F35;
+  --color-primary-700: #12332b;
+  --color-primary-800: #0f2822;
+  --color-primary-900: #0a1c17;
+
+  --color-accent-gold: #C58B43;
+  --color-accent-gold-dark: #9F6927;
+  --color-accent-gold-light: #FAF0E1;
+
+  --color-surface-soft: #F5F2E9;
+  --color-surface-card: #FAF8F4;
 }
 
 html {
@@ -44,41 +54,31 @@ html {
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #1e293b;
+  --background: #F5F2E9;
+  --foreground: #192421;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), 'Inter', sans-serif;
+  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading), 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-heading), 'Lora', serif;
+  letter-spacing: -0.015em;
 }
 
-/* Organic Shapes & Custom Utility Accents */
-.shape-blob-1 {
-  border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
-}
-
-.shape-blob-2 {
-  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-}
-
-.shape-curve-bottom {
-  border-bottom-left-radius: 2.5rem;
-  border-bottom-right-radius: 2.5rem;
-}
-
-.shape-curve-top {
-  border-top-left-radius: 2.5rem;
-  border-top-right-radius: 2.5rem;
-}
-
-/* Custom Islamic Geometric Overlay Pattern (Subtle) */
+/* Subtle architectural Islamic geometric background pattern */
 .bg-islamic-pattern {
-  background-image: radial-gradient(rgba(13, 148, 136, 0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(49, 92, 76, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Subtle paper texture overlay */
+.bg-paper-texture {
+  background-color: #F5F2E9;
+  background-image: radial-gradient(rgba(23, 63, 53, 0.04) 1px, transparent 0);
+  background-size: 16px 16px;
 }

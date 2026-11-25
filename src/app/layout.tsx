@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter } from "next/font/google";
+import { Lora, Plus_Jakarta_Sans } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import "./globals.css";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const lora = Lora({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-body",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
@@ -21,12 +22,12 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "SDIT [Nama Sekolah] - Sekolah Dasar Islam Terpadu",
+    default: "SDIT [Nama Sekolah] | Sekolah Dasar Islam Terpadu",
     template: "%s | SDIT [Nama Sekolah]",
   },
   description:
-    "Website Profil Resmi SDIT [Nama Sekolah]. Mewujudkan generasi Rabbani yang unggul dalam Imtaq, cerdas dalam Iptek, dan berakhlak mulia.",
-  keywords: ["SDIT", "Sekolah Dasar Islam Terpadu", "Pendidikan Islam", "PPDB SDIT", "Profil Sekolah"],
+    "Website resmi SDIT [Nama Sekolah]. Sekolah Dasar Islam Terpadu yang membina adab Islami, hafalan Al-Qur'an, serta kecakapan akademik siswa sejak dini.",
+  keywords: ["SDIT", "Sekolah Dasar Islam Terpadu", "Pendidikan Islam", "Tahfidz Al-Qur'an", "Sekolah Dasar"],
 };
 
 export default function RootLayout({
@@ -37,19 +38,18 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${plusJakartaSans.variable} ${inter.variable} h-full antialiased`}
+      className={`${lora.variable} ${plusJakartaSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-800 selection:bg-emerald-200 selection:text-emerald-900">
+      <body className="min-h-full flex flex-col bg-ivory text-charcoal selection:bg-sand selection:text-forest">
         <NextTopLoader
-          color="#059669"
+          color="#C58B43"
           initialPosition={0.08}
           crawlSpeed={200}
-          height={3}
+          height={2}
           crawl={true}
           showSpinner={false}
           easing="ease"
           speed={200}
-          shadow="0 0 10px #059669,0 0 5px #059669"
         />
         <Navbar />
         <main className="flex-1">{children}</main>

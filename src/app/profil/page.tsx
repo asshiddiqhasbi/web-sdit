@@ -1,22 +1,5 @@
 import Link from "next/link";
-import {
-  ChevronRight,
-  Sparkles,
-  BookOpen,
-  Target,
-  CheckCircle2,
-  Award,
-  HeartHandshake,
-  ShieldCheck,
-  Building2,
-  Monitor,
-  HeartPulse,
-  Utensils,
-  Smile,
-  Compass,
-  GraduationCap,
-} from "lucide-react";
-import FadeIn from "@/components/ui/FadeIn";
+import { ChevronRight, ArrowRight } from "lucide-react";
 
 export const metadata = {
   title: "Profil Sekolah",
@@ -24,379 +7,323 @@ export const metadata = {
 };
 
 export default function ProfilPage() {
-  // Data Fasilitas Sekolah (8 items)
-  const facilities = [
+  const missionPoints = [
+    "Menyelenggarakan pendidikan Islam terpadu yang mengintegrasikan aspek Imtaq dan Iptek secara seimbang.",
+    "Membimbing pembiasaan ibadah harian, adab Islami, serta hafalan Al-Qur'an target 2 hingga 3 Juz.",
+    "Mengembangkan potensi bakat, minat, dan kecerdasan majemuk setiap peserta didik secara bertahap.",
+    "Menciptakan lingkungan belajar yang ramah anak, aman, bersih, dan kaya akan keteladanan harian.",
+    "Menjalin komunikasi yang erat dan saling mendukung antara sekolah, orang tua murid, dan masyarakat.",
+  ];
+
+  const coreValues = [
     {
-      name: "Ruang Kelas Ber-AC & Multimedia",
-      desc: "Ruang belajar nyaman ber-AC yang dilengkapi dengan proyektor interaktif dan pencahayaan optimal.",
-      icon: Building2,
-      color: "from-emerald-100 to-teal-100",
+      num: "01",
+      title: "Salimul Aqidah",
+      sub: "Aqidah yang Lurus",
+      desc: "Membangun ketauhidan yang kokoh dalam diri ananda agar senantiasa bergantung dan beribadah kepada Allah SWT.",
     },
     {
-      name: "Masjid & Ruang Tahfidz",
-      desc: "Masjid sekolah yang bersih dan luas untuk shalat berjamaah, hafalan Al-Qur'an, dan pembiasaan adab.",
-      icon: BookOpen,
-      color: "from-amber-100 to-yellow-100",
+      num: "02",
+      title: "Shahihul Ibadah",
+      sub: "Ibadah yang Benar",
+      desc: "Membimbing tata cara ibadah harian (shalat, wudhu, doa) sesuai tuntunan sunnah Rasulullah SAW.",
     },
     {
-      name: "Perpustakaan & Corner Baca",
-      desc: "Koleksi buku bacaan lengkap mulai dari ilmu pengetahuan umum, sains, hingga kisah nabi & sahabat.",
-      icon: GraduationCap,
-      color: "from-teal-100 to-emerald-100",
+      num: "03",
+      title: "Matinul Khuluq",
+      sub: "Akhlak yang Mulia",
+      desc: "Menanamkan sikap santun, jujur, hormat kepada orang tua dan guru, serta menyayangi sesama teman.",
     },
     {
-      name: "Laboratorium Komputer & STEM",
-      desc: "Fasilitas perangkat komputer terkini untuk mengenalkan literasi digital dan teknologi sejak dini.",
-      icon: Monitor,
-      color: "from-orange-100 to-amber-100",
-    },
-    {
-      name: "Lapangan Olahraga & Panahan",
-      desc: "Area olahraga outdoor serbaguna untuk basket, futsal, bulu tangkis, dan kegiatan ekstrakurikuler panahan.",
-      icon: Target,
-      color: "from-emerald-100 to-amber-100",
-    },
-    {
-      name: "Ruang UKS & Kesehatan",
-      desc: "Ruang kesehatan yang bersih, terlengkapi obat-obatan pertolongan pertama, dan ditangani petugas siaga.",
-      icon: HeartPulse,
-      color: "from-red-100 to-rose-100",
-    },
-    {
-      name: "Kantin Sehat & Thayyib",
-      desc: "Kantin yang menyajikan makanan dan minuman yang terjamin kehalalan, kebersihan, serta gizinya.",
-      icon: Utensils,
-      color: "from-amber-100 to-orange-100",
-    },
-    {
-      name: "Area Bermain & Taman Ceria",
-      desc: "Taman bermain terbuka yang aman untuk mengasah motorik dan sosialisasi anak saat jam istirahat.",
-      icon: Smile,
-      color: "from-teal-100 to-orange-100",
+      num: "04",
+      title: "Mutsaqqajul Fikr",
+      sub: "Wawasan yang Luas",
+      desc: "Mendorong daya kritis, kreativitas, kecerdasan akademik, dan kecintaan pada ilmu pengetahuan.",
     },
   ];
 
-  // Nilai-Nilai Utama (4 cards)
-  const coreValues = [
+  const featuredFacilities = [
     {
-      title: "Salimul Aqidah",
-      sub: "Aqidah yang Lurus",
-      desc: "Membangun ketauhidan yang kokoh dalam diri ananda agar hanya bergantung dan beribadah kepada Allah SWT.",
-      icon: HeartHandshake,
-      badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
+      name: "Lingkungan Kampus Asri",
+      desc: "Area sekolah yang bersih, teduh dengan pepohonan hijau, dan aman bagi aktivitas anak.",
+      image: "/images/campus-hero.jpg",
     },
     {
-      title: "Shahihul Ibadah",
-      sub: "Ibadah yang Benar",
-      desc: "Membimbing tata cara ibadah harian (shalat, wudhu, doa) sesuai dengan sunnah Rasulullah SAW.",
-      icon: Award,
-      badgeColor: "bg-amber-100 text-amber-900 border-amber-200",
+      name: "Ruang Kelas Nyaman",
+      desc: "Ruang belajar dengan pencahayaan alami yang baik, meja kursi ergonomis, dan alat bantu visual.",
+      image: "/images/classroom-learning.jpg",
     },
     {
-      title: "Matinul Khuluq",
-      sub: "Akhlak yang Mulia",
-      desc: "Menanamkan sikap santun, jujur, hormat kepada orang tua & guru, serta menyayangi sesama teman.",
-      icon: ShieldCheck,
-      badgeColor: "bg-teal-100 text-teal-800 border-teal-200",
+      name: "Mushola & Ruang Tahfidz",
+      desc: "Tempat shalat berjamaah harian, halaqah hafalan Al-Qur'an, dan pembinaan adab yang tenang.",
+      image: "/images/tahfidz-halaqah.jpg",
     },
     {
-      title: "Mutsaqqajul Fikr",
-      sub: "Wawasan yang Luas",
-      desc: "Mendorong daya kritis, kreativitas, kecerdasan akademik, dan kecintaan pada ilmu pengetahuan modern.",
-      icon: Compass,
-      badgeColor: "bg-orange-100 text-orange-900 border-orange-200",
+      name: "Pojok Literasi & Sains",
+      desc: "Koleksi buku cerita Islami, ensiklopedia sains bergambar, serta alat peraga eksperimen dasar.",
+      image: "/images/program-language.jpg",
+    },
+  ];
+
+  const supportingFacilities = [
+    {
+      name: "Ruang UKS & Kesehatan",
+      desc: "Ruang kesehatan bersih dengan perlengkapan pertolongan pertama serta pemantauan kesehatan berkala.",
+    },
+    {
+      name: "Kantin Sehat & Thayyib",
+      desc: "Menyediakan asupan makanan dan minuman yang terjamin kehalalan, kebersihan, serta gizinya.",
+    },
+    {
+      name: "Lapangan Olahraga Sekolah",
+      desc: "Area luar ruang untuk senam pagi, permainan bola, serta kegiatan kepanduan Pramuka SIT.",
+    },
+    {
+      name: "Area Bermain & Taman",
+      desc: "Taman bermain terbuka yang aman untuk melatih ketangkasan motorik dan interaksi sosial siswa.",
     },
   ];
 
   return (
-    <div className="space-y-10 sm:space-y-16 pb-10 sm:pb-16">
+    <div className="space-y-10 sm:space-y-14 pb-12 sm:pb-16">
       
       {/* ---------------------------------------------------- */}
-      {/* 1. HEADER HALAMAN & BREADCRUMB */}
+      {/* 1. HEADER HALAMAN EDITORIAL (BRIGHT IVORY) */}
       {/* ---------------------------------------------------- */}
-      <section className="bg-gradient-to-r from-emerald-900 via-teal-900 to-emerald-950 text-white py-8 sm:py-12 px-4 sm:px-6 lg:px-8 shape-curve-bottom relative overflow-hidden">
-        <div className="absolute top-0 right-1/4 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute inset-0 bg-islamic-pattern opacity-25"></div>
-
-        <div className="relative max-w-7xl mx-auto space-y-3 sm:space-y-4 text-center">
-          <FadeIn direction="up">
-            {/* Breadcrumb */}
-            <nav className="flex justify-center items-center gap-2 text-xs font-semibold text-emerald-200 mb-2">
-              <Link href="/" className="hover:text-amber-300 transition-colors">
+      <section className="pt-6 sm:pt-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-b border-sand/80 pb-6 sm:pb-8 space-y-4">
+            <nav className="flex items-center gap-2 text-xs font-sans text-charcoal-muted">
+              <Link href="/" className="hover:text-forest transition-colors">
                 Beranda
               </Link>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-              <span className="text-amber-300">Profil Sekolah</span>
+              <ChevronRight className="w-3.5 h-3.5 text-sand-dark" />
+              <span className="text-forest font-semibold">Profil Sekolah</span>
             </nav>
 
-            {/* Header Title */}
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-800/80 border border-emerald-600/60 text-amber-300 text-xs font-semibold">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Mengenal SDIT [Nama Sekolah]</span>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-end">
+              <div className="lg:col-span-7 space-y-2">
+                <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                  Tentang Sekolah
+                </span>
+                <h1 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-bold text-forest leading-tight mt-1">
+                  Profil, Sejarah & Visi Pendidikan
+                </h1>
               </div>
-              <h1 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white">
-                Profil & Visi Misi Sekolah
-              </h1>
-              <p className="text-slate-200 text-xs sm:text-base max-w-2xl mx-auto pt-1">
-                Mengenal lebih dekat sejarah, landasan filosofi, serta komitmen kami dalam mencetak generasi penerus yang Qur'ani dan berprestasi.
-              </p>
+              <div className="lg:col-span-5">
+                <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
+                  Perjalanan pendirian, landasan filosofis, nilai-nilai karakter Islam Terpadu, serta sarana belajar di SDIT [Nama Sekolah].
+                </p>
+              </div>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </section>
 
       {/* ---------------------------------------------------- */}
-      {/* 2. SEJARAH SINGKAT */}
+      {/* 2. SEJARAH SINGKAT (EDITORIAL ESSAY + FOTO NYATA) */}
       {/* ---------------------------------------------------- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
-          {/* Sejarah Text Column */}
-          <div className="lg:col-span-7 space-y-4 sm:space-y-5">
-            <FadeIn direction="up">
-              <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200/60 mb-3.5">
-                  <Compass className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>Perjalanan Kami</span>
-                </div>
-
-                <h2 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900">
-                  Sejarah Berdirinya SDIT [Nama Sekolah]
-                </h2>
-              </div>
-            </FadeIn>
-
-            <FadeIn direction="up" delay={0.2}>
-              <div className="space-y-3 sm:space-y-4 text-xs sm:text-base text-slate-600 leading-relaxed">
-                <p>
-                  SDIT [Nama Sekolah] didirikan pada tahun 2010 oleh para tokoh pendidikan dan alim ulama yang peduli terhadap pentingnya pendidikan karakter anak di era modern. Berawal dari niat suci untuk memadukan ilmu pengetahuan umum dan pemahaman keagamaan yang mendalam, sekolah ini hadir sebagai solusi pendidikan dasar berkualitas di wilayah ini.
-                </p>
-                <p>
-                  Seiring berjalannya waktu, SDIT [Nama Sekolah] terus bertransformasi menjadi lembaga pendidikan unggulan dengan mengadopsi standar Kurikulum Merdeka yang diselaraskan dengan kurikulum khas Sekolah Dasar Islam Terpadu (SIT). Pembelajaran diolah secara interaktif, ramah anak, dan berorientasi pada pengembangan kecerdasan holistik.
-                </p>
-                <p>
-                  Kini, SDIT [Nama Sekolah] telah meluluskan ratusan alumni yang tidak hanya unggul secara akademik di jenjang pendidikan selanjutnya, tetapi juga memiliki ketahanan moral serta hafalan Al-Qur'an yang kuat.
-                </p>
-              </div>
-            </FadeIn>
-          </div>
-
-          {/* Sejarah Image Placeholder Column */}
-          <div className="lg:col-span-5 flex justify-center">
-            <FadeIn direction="up" delay={0.3} className="w-full max-w-md">
-              <div className="relative w-full">
-                <div className="absolute -inset-1.5 bg-gradient-to-r from-emerald-500 to-amber-400 rounded-3xl blur-md opacity-30"></div>
-                
-                <div className="relative bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-md space-y-4 text-center">
-                  <div className="w-full h-48 sm:h-64 rounded-2xl bg-gradient-to-br from-emerald-600 via-teal-700 to-emerald-800 flex flex-col items-center justify-center text-white p-4 sm:p-6 shadow-inner border border-white/20">
-                    <Building2 className="w-12 h-12 sm:w-16 sm:h-16 text-amber-300 mb-2" />
-                    <span className="font-heading font-extrabold text-base sm:text-lg">Gedung Utama Sekolah</span>
-                    <span className="text-[11px] sm:text-xs text-amber-200 font-medium mt-1">[Gambar Gedung Sekolah Placeholder]</span>
-                  </div>
-                  <div className="bg-emerald-50 p-2.5 sm:p-3 rounded-xl border border-emerald-100 text-emerald-900 text-xs font-semibold">
-                    Berdiri Sejak 2010 • Melayani dengan Sepenuh Hati
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------- */}
-      {/* 3. VISI & MISI */}
-      {/* ---------------------------------------------------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <FadeIn direction="up">
-          <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10">
-            <span className="inline-block text-xs font-bold tracking-widest text-emerald-700 uppercase bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/60 mb-3.5">
-              Arah & Tujuan
-            </span>
-            <h2 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900">
-              Visi dan Misi Sekolah
-            </h2>
-          </div>
-        </FadeIn>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-          
-          {/* Card Visi (4 cols) */}
-          <div className="lg:col-span-5">
-            <FadeIn direction="up" delay={0.1} className="h-full">
-              <div className="bg-gradient-to-br from-emerald-800 via-teal-800 to-emerald-900 text-white p-6 sm:p-10 rounded-3xl shadow-md space-y-5 sm:space-y-6 relative overflow-hidden flex flex-col justify-between border border-emerald-700/60 h-full">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
-                
-                <div className="space-y-3 sm:space-y-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-amber-400 text-emerald-950 flex items-center justify-center shadow-md">
-                    <Target className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </div>
-                  <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-amber-300">
-                    Visi SDIT [Nama Sekolah]
-                  </h3>
-                  <blockquote className="text-sm sm:text-lg text-slate-100 font-medium leading-relaxed italic border-l-4 border-amber-400 pl-3 sm:pl-4 py-1">
-                    "Terwujudnya Generasi Rabbani yang Unggul dalam Imtaq, Cerdas dalam Iptek, serta Berakhlak Mulia dan Berwawasan Global."
-                  </blockquote>
-                </div>
-
-                <div className="pt-3 sm:pt-4 border-t border-emerald-700/60 text-xs text-amber-200 font-medium">
-                  Landasan Utama Pendidikan Karakter Qur'ani
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-
-          {/* Card Misi (7 cols) */}
-          <div className="lg:col-span-7">
-            <FadeIn direction="up" delay={0.2} className="h-full">
-              <div className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200/80 shadow-sm space-y-5 sm:space-y-6 h-full">
-                <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                    <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-bold text-lg sm:text-xl text-slate-900">
-                      Misi SDIT [Nama Sekolah]
-                    </h3>
-                    <p className="text-xs text-slate-500">Langkah Nyata Mewujudkan Visi Sekolah</p>
-                  </div>
-                </div>
-
-                <ul className="space-y-3 sm:space-y-3.5 text-xs sm:text-sm text-slate-700">
-                  <li className="flex items-start gap-2.5 sm:gap-3 bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-100">
-                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>Menyelenggarakan pendidikan Islam terpadu yang mengintegrasikan aspek Imtaq dan Iptek secara harmonis.</span>
-                  </li>
-                  <li className="flex items-start gap-2.5 sm:gap-3 bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-100">
-                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>Membimbing pembiasaan ibadah harian, adab Islami, serta hafalan Al-Qur'an (Tahfidz) target 2-3 Juz.</span>
-                  </li>
-                  <li className="flex items-start gap-2.5 sm:gap-3 bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-100">
-                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>Mengembangkan potensi bakat, minat, dan kecerdasan majemuk (multiple intelligences) setiap peserta didik.</span>
-                  </li>
-                  <li className="flex items-start gap-2.5 sm:gap-3 bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-100">
-                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>Menciptakan lingkungan belajar yang ramah anak, aman, inovatif, dan kaya akan keteladanan.</span>
-                  </li>
-                  <li className="flex items-start gap-2.5 sm:gap-3 bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-100">
-                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>Jalinan kemitraan yang erat dan harmonis antara sekolah, orang tua murid, dan masyarakat.</span>
-                  </li>
-                </ul>
-              </div>
-            </FadeIn>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------- */}
-      {/* 4. NILAI-NILAI ISLAM TERPADU */}
-      {/* ---------------------------------------------------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <FadeIn direction="up">
-          <div className="bg-gradient-to-br from-emerald-50 via-teal-50/40 to-slate-50 p-6 sm:p-12 rounded-3xl border border-emerald-100 space-y-6 sm:space-y-8">
-            
-            <div className="text-center max-w-3xl mx-auto">
-              <span className="inline-block text-xs font-bold tracking-widest text-emerald-700 uppercase bg-white px-3.5 py-1.5 rounded-full border border-emerald-200 mb-3.5">
-                Filosofi Pendidikan
-              </span>
-              <h2 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2 sm:mb-3">
-                Pendekatan Islam Terpadu Kami
-              </h2>
-              <p className="text-slate-600 text-xs sm:text-base leading-relaxed">
-                Konsep Sekolah Islam Terpadu mendasarkan seluruh proses pembelajaran pada Al-Qur'an dan As-Sunnah. Setiap ilmu umum senantiasa dihubungkan dengan kebesaran Allah SWT agar melahirkan generasi yang cerdas intelek sekaligus mulia jiwanya.
-              </p>
+          <div className="lg:col-span-5 space-y-2.5">
+            <div className="border border-sand bg-sand-light aspect-[16/10] overflow-hidden">
+              <img
+                src="/images/campus-hero.jpg"
+                alt="Lingkungan Kampus SDIT [Nama Sekolah]"
+                className="w-full h-full object-cover"
+              />
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {coreValues.map((val, idx) => {
-                const IconComp = val.icon;
-                return (
-                  <FadeIn key={idx} direction="up" delay={idx * 0.1}>
-                    <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3 hover:shadow-md transition-shadow h-full">
-                      <div className="flex items-center justify-between">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
-                          <IconComp className="w-5 h-5 sm:w-6 sm:h-6" />
-                        </div>
-                        <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${val.badgeColor}`}>
-                          {val.sub}
-                        </span>
-                      </div>
-                      
-                      <h3 className="font-heading font-bold text-base sm:text-lg text-slate-900">
-                        {val.title}
-                      </h3>
-                      
-                      <p className="text-xs text-slate-600 leading-relaxed">
-                        {val.desc}
-                      </p>
-                    </div>
-                  </FadeIn>
-                );
-              })}
-            </div>
-
-          </div>
-        </FadeIn>
-      </section>
-
-      {/* ---------------------------------------------------- */}
-      {/* 5. FASILITAS SEKOLAH */}
-      {/* ---------------------------------------------------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <FadeIn direction="up">
-          <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10">
-            <span className="inline-block text-xs font-bold tracking-widest text-emerald-700 uppercase bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200/60 mb-3.5">
-              Sarana & Prasarana
-            </span>
-            <h2 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">
-              Fasilitas Sekolah Lengkap
-            </h2>
-            <p className="text-slate-600 text-xs sm:text-base">
-              Mendukung kegiatan belajar mengajar yang optimal, aman, dan menyenangkan bagi seluruh siswa.
+            <p className="text-[11px] font-sans text-charcoal-muted">
+              Lingkungan belajar SDIT [Nama Sekolah], berdiri sejak tahun 2010.
             </p>
           </div>
-        </FadeIn>
+
+          <div className="lg:col-span-7 space-y-4">
+            <div>
+              <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                Sejarah Kami
+              </span>
+              <h2 className="font-heading text-xl sm:text-3xl font-bold text-forest mt-1">
+                Berawal dari Niat Tulus Mencetak Generasi Beradab
+              </h2>
+            </div>
+
+            <div className="space-y-3.5 font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
+              <p>
+                SDIT [Nama Sekolah] didirikan pada tahun 2010 oleh para praktisi pendidikan dan tokoh masyarakat yang peduli terhadap pentingnya pembinaan karakter anak di usia sekolah dasar. Sekolah ini hadir untuk menjawab kebutuhan orang tua akan pendidikan yang memadukan ilmu pengetahuan umum dengan pemahaman agama yang kuat.
+              </p>
+              <p>
+                Seiring berjalannya waktu, SDIT [Nama Sekolah] terus berkembang dengan memadukan Kurikulum Nasional bersama kurikulum khas Sekolah Dasar Islam Terpadu (SIT). Proses belajar dirancang secara interaktif, ramah anak, dan memperhatikan perkembangan kecerdasan maupun adab keseharian siswa.
+              </p>
+              <p>
+                Hingga kini, kami telah meluluskan berbagai angkatan alumni yang melanjutkan pendidikan ke SMP maupun pesantren pilihan, dengan bekal akhlak baik serta hafalan Al-Qur'an yang terjaga.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------- */}
+      {/* 3. VISI & MISI (FOREST BLOCK + NUMBERED INDEX) */}
+      {/* ---------------------------------------------------- */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="border-t border-sand/80 pt-8 sm:pt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          
+          <div className="lg:col-span-5">
+            <div className="bg-forest text-ivory p-6 sm:p-8 space-y-4 border border-forest-light/40">
+              <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                Visi Sekolah
+              </span>
+              <blockquote className="font-heading italic text-lg sm:text-2xl text-ivory leading-relaxed border-l-2 border-gold pl-4">
+                "Terwujudnya Generasi Rabbani yang Unggul dalam Imtaq, Cerdas dalam Iptek, serta Berakhlak Mulia dan Berwawasan Luas."
+              </blockquote>
+              <p className="text-xs font-sans text-ivory/70 pt-2 border-t border-ivory/15">
+                Menjadi arah utama seluruh kegiatan pembelajaran dan pembiasaan harian di sekolah.
+              </p>
+            </div>
+          </div>
+
+          <div className="lg:col-span-7 space-y-4">
+            <div>
+              <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                Misi Sekolah
+              </span>
+              <h2 className="font-heading text-xl sm:text-2xl font-bold text-forest mt-1">
+                Langkah Nyata Mewujudkan Visi
+              </h2>
+            </div>
+
+            <ol className="divide-y divide-sand/80 border-y border-sand/80">
+              {missionPoints.map((item, idx) => (
+                <li key={idx} className="py-3.5 flex items-baseline gap-4">
+                  <span className="font-heading text-sm font-bold text-gold shrink-0">
+                    0{idx + 1}
+                  </span>
+                  <span className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------- */}
+      {/* 4. NILAI-NILAI ISLAM TERPADU (EDITORIAL COLUMNS) */}
+      {/* ---------------------------------------------------- */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="border-b border-sand/80 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+          <div>
+            <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+              Filosofi Pendidikan
+            </span>
+            <h2 className="font-heading text-xl sm:text-3xl font-bold text-forest mt-0.5">
+              Pendekatan Islam Terpadu Kami
+            </h2>
+          </div>
+          <p className="font-sans text-xs sm:text-sm text-charcoal-muted max-w-md">
+            Seluruh ilmu umum dihubungkan dengan nilai keimanan agar melahirkan generasi yang cerdas akal dan baik adabnya.
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {facilities.map((facility, idx) => {
-            const IconComp = facility.icon;
-            return (
-              <FadeIn key={idx} direction="up" delay={idx * 0.08}>
-                <div className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col justify-between h-full">
-                  <div>
-                    {/* Facility Image Placeholder Header */}
-                    <div
-                      className={`h-40 bg-gradient-to-br ${facility.color} flex flex-col items-center justify-center p-4 text-center border-b border-slate-100 relative group-hover:scale-105 transition-transform duration-300`}
-                    >
-                      <div className="w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-xs text-emerald-800 flex items-center justify-center shadow-xs mb-1">
-                        <IconComp className="w-6 h-6" />
-                      </div>
-                      <span className="text-[11px] font-bold text-slate-600">
-                        [Gambar Fasilitas Placeholder]
-                      </span>
-                    </div>
+          {coreValues.map((val, idx) => (
+            <div key={idx} className="border-t-2 border-forest pt-4 space-y-2">
+              <div className="flex items-center justify-between text-xs font-sans">
+                <span className="font-heading font-bold text-gold">{val.num}</span>
+                <span className="text-[11px] font-semibold text-sage uppercase tracking-wider">
+                  {val.sub}
+                </span>
+              </div>
+              <h3 className="font-heading text-lg font-bold text-forest">
+                {val.title}
+              </h3>
+              <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
+                {val.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-                    <div className="p-5 space-y-2">
-                      <h3 className="font-heading font-bold text-base text-slate-900 group-hover:text-emerald-700 transition-colors">
-                        {facility.name}
-                      </h3>
-                      <p className="text-xs text-slate-600 leading-relaxed">
-                        {facility.desc}
-                      </p>
-                    </div>
-                  </div>
+      {/* ---------------------------------------------------- */}
+      {/* 5. FASILITAS SEKOLAH (REAL PHOTOGRAPHY + DIRECTORY) */}
+      {/* ---------------------------------------------------- */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="border-b border-sand/80 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+          <div>
+            <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+              Sarana & Prasarana
+            </span>
+            <h2 className="font-heading text-xl sm:text-3xl font-bold text-forest mt-0.5">
+              Fasilitas Sekolah
+            </h2>
+          </div>
+          <p className="font-sans text-xs sm:text-sm text-charcoal-muted max-w-md">
+            Lingkungan belajar yang aman, bersih, dan memadai untuk menunjang kegiatan akademik maupun pembinaan karakter.
+          </p>
+        </div>
 
-                  <div className="px-5 pb-4 pt-1 text-[11px] font-semibold text-emerald-700">
-                    ✓ Tersedia & Siap Pakai
-                  </div>
-                </div>
-              </FadeIn>
-            );
-          })}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {featuredFacilities.map((facility, idx) => (
+            <div key={idx} className="space-y-2.5 group">
+              <div className="border border-sand bg-sand-light aspect-[4/3] overflow-hidden">
+                <img
+                  src={facility.image}
+                  alt={facility.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-heading font-bold text-base text-forest">
+                  {facility.name}
+                </h3>
+                <p className="font-sans text-xs text-charcoal-muted leading-relaxed">
+                  {facility.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-sand/80">
+          {supportingFacilities.map((item, idx) => (
+            <div key={idx} className="py-2 space-y-1">
+              <h4 className="font-heading font-bold text-sm sm:text-base text-forest">
+                {item.name}
+              </h4>
+              <p className="font-sans text-xs text-charcoal-muted leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------- */}
+      {/* 6. CLOSING INVITATION */}
+      {/* ---------------------------------------------------- */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="border-t border-sand/80 pt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h3 className="font-heading text-lg sm:text-xl font-bold text-forest">
+              Ingin melihat langsung suasana belajar di sekolah kami?
+            </h3>
+            <p className="font-sans text-xs sm:text-sm text-charcoal-muted">
+              Silakan jadwalkan kunjungan atau hubungi sekretariat kami untuk informasi lebih lanjut.
+            </p>
+          </div>
+          <Link
+            href="/kontak"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 font-sans font-semibold text-xs uppercase tracking-wider text-ivory bg-forest hover:bg-forest-light transition-all shrink-0"
+          >
+            <span>Hubungi Kami</span>
+            <ArrowRight className="w-3.5 h-3.5 text-gold" />
+          </Link>
         </div>
       </section>
 

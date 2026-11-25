@@ -6,6 +6,7 @@ export interface NewsItem {
   category: string;
   author: string;
   imageBg: string;
+  imageUrl?: string;
   excerpt: string;
   content: string[];
 }
@@ -18,29 +19,31 @@ export const DUMMY_BERITA: NewsItem[] = [
     date: "15 Agustus 2026",
     category: "Kegiatan Siswa",
     author: "Humas SDIT",
-    imageBg: "from-emerald-400 via-teal-500 to-emerald-600",
+    imageBg: "from-forest to-sage",
+    imageUrl: "/images/campus-hero.jpg",
     excerpt: "Keceriaan dan kehangatan menyelimuti hari pertama sekolah siswa-siswi baru SDIT [Nama Sekolah] dalam pekan pengenalan lingkungan sekolah.",
     content: [
       "Suasana keceriaan dan kehangatan menyelimuti hari pertama sekolah di SDIT [Nama Sekolah]. Sebanyak 120 siswa-siswi baru kelas 1 disambut hangat oleh para guru dan kakak kelas dalam rangka Masa Pengenalan Lingkungan Sekolah (MPLS) Ramah Anak Tahun Ajaran 2026/2027.",
-      "Kegiatan diawali dengan penyambutan ramah di gerbang utama sekolah, penyerahan name tag ceria, serta dongeng motivasi Islami yang dibawakan oleh pendongeng nasional. Seluruh siswa baru terlihat sangat antusias dan bersemangat mengikuti setiap alur kegiatan tanpa ada rasa canggung.",
-      "Kepala SDIT [Nama Sekolah] menyampaikan bahwa MPLS tahun ini dirancang khusus untuk membangun kenyamanan psikologis anak, mengenalkan adab-adab sekolah, fasilitas belajar, serta menanamkan rasa cinta kepada sekolah sebagai rumah kedua mereka.",
-      "Rangkaian acara ditutup dengan pelepasan balon harapan dan doa bersama seluruh civitas akademika. Semoga ananda semua menjadi generasi pembelajar yang berakhlak mulia dan senantiasa dalam lindungan Allah SWT."
+      "Kegiatan diawali dengan penyambutan ramah di gerbang utama sekolah, penyerahan tanda pengenal kelas, serta kisah motivasi Islami bersama wali kelas. Seluruh siswa baru terlihat antusias dan bersemangat mengikuti setiap alur kegiatan.",
+      "Kepala SDIT [Nama Sekolah] menyampaikan bahwa MPLS tahun ini dirancang untuk membangun kenyamanan psikologis anak, mengenalkan adab di sekolah, fasilitas belajar, serta menumbuhkan rasa betah kepada sekolah sebagai rumah kedua mereka.",
+      "Rangkaian acara ditutup dengan doa bersama seluruh guru dan siswa di halaman sekolah. Semoga ananda menjadi generasi pembelajar yang berakhlak baik."
     ]
   },
   {
     id: "2",
     slug: "kegiatan-manasik-haji-cilik-2026",
-    title: "Kegiatan Manasik Haji Cilik: Menanamkan Rukun Islam Sejak Dini",
+    title: "Praktik Manasik Haji Cilik: Mengenalkan Rukun Islam Sejak Dini",
     date: "12 Agustus 2026",
     category: "Kegiatan Islami",
     author: "Tim Guru Agama",
-    imageBg: "from-amber-400 via-yellow-500 to-amber-600",
-    excerpt: "Ratusan siswa SDIT [Nama Sekolah] antusias mengikuti simulasi ibadah haji cilik lengkap dengan pakaian ihram dan miniatur Ka'bah.",
+    imageBg: "from-sand-dark to-forest",
+    imageUrl: "/images/tahfidz-halaqah.jpg",
+    excerpt: "Siswa SDIT [Nama Sekolah] mengikuti simulasi ibadah haji lengkap dengan pakaian ihram dan urutan tata cara rukun haji di lapangan sekolah.",
     content: [
-      "SDIT [Nama Sekolah] sukses menggelar kegiatan tahunan Manasik Haji Cilik yang diikuti oleh seluruh siswa dari kelas 1 hingga kelas 6. Kegiatan ini bertujuan untuk mengenalkan rukun Islam kelima serta menanamkan kerinduan terhadap Tanah Suci sejak usia dini.",
-      "Para siswa tampak anggun dan bersahaja mengenakan pakaian ihram putih bersih. Mereka mempraktikkan secara langsung seluruh rukun haji, mulai dari niat ihram di miqat, tawaf mengelilingi miniatur Ka'bah, sa'i antara Shafa dan Marwah, hingga melontar jumrah.",
-      "Pembimbing kegiatan menjelaskan bahwa metode pembelajaran berbasis praktik langsung (learning by doing) sangat efektif untuk membentuk pemahaman agama yang mendalam dan berkesan bagi anak-anak.",
-      "Orang tua murid yang turut hadir mengapresiasi tinggi kerapian dan kekhusyukan anak-anak selama pelaksanaan manasik. Semoga kelak ananda semua dapat menunaikan ibadah haji yang sesungguhnya di Baitullah."
+      "SDIT [Nama Sekolah] menggelar kegiatan tahunan Manasik Haji Cilik yang diikuti oleh seluruh siswa dari kelas 1 hingga kelas 6. Kegiatan ini bertujuan mengenalkan rukun Islam kelima secara langsung dan menyenangkan.",
+      "Para siswa tampak tertib mengenakan pakaian ihram putih bersih. Mereka mempraktikkan seluruh rukun haji, mulai dari niat ihram, tawaf mengelilingi replika Ka'bah, sa'i, hingga melontar jumrah.",
+      "Pembimbing kegiatan menjelaskan bahwa metode praktik langsung sangat membantu anak memahami urutan ibadah dengan lebih mudah dibandingkan sekadar teori di kelas.",
+      "Orang tua murid yang turut hadir mengapresiasi ketertiban dan semangat anak-anak selama pelaksanaan manasik berlangsung."
     ]
   },
   {
@@ -50,61 +53,65 @@ export const DUMMY_BERITA: NewsItem[] = [
     date: "10 Agustus 2026",
     category: "Prestasi",
     author: "Tim Prestasi Siswa",
-    imageBg: "from-teal-400 via-emerald-500 to-teal-700",
-    excerpt: "Prestasi membanggakan kembali diukir oleh ananda perwakilan sekolah yang berhasil menjuarai kompetisi sains tingkat nasional.",
+    imageBg: "from-sage to-forest",
+    imageUrl: "/images/activity-science.jpg",
+    excerpt: "Ananda Muhammad Al-Fatih dari kelas 5 berhasil meraih medali emas dalam kompetisi sains dan matematika tingkat nasional tahun 2026.",
     content: [
-      "Kabar membanggakan kembali datang dari perwakilan siswa SDIT [Nama Sekolah]. Ananda Muhammad Al-Fatih (Siswa Kelas 5) berhasil meraih Medali Emas dalam ajang Olimpiade Sains dan Matematika Nasional tingkat SD tahun 2026.",
-      "Kompetisi nasional yang diikuti oleh ribuan peserta dari berbagai provinsi ini menguji ketajaman logika, analisis masalah matematika, serta eksperimen sains dasar. Al-Fatih tampil percaya diri dan konsisten sejak babak penyisihan hingga final.",
-      "Guru pembina olimpiade mengungkapkan rasa syukur dan bangganya atas kesungguhan Al-Fatih dalam berlatih. Keberhasilan ini tidak lepas dari kombinasi ketekunan siswa, bimbingan guru yang intensif, serta dukungan doa dari orang tua.",
-      "Pihak sekolah memberikan penghargaan khusus beasiswa pendidikan untuk memotivasi Al-Fatih dan siswa-siswi lainnya agar terus berprestasi dan mengembangkan potensi terbaik mereka."
+      "Kabar membanggakan datang dari perwakilan siswa SDIT [Nama Sekolah]. Ananda Muhammad Al-Fatih (Siswa Kelas 5) berhasil meraih Medali Emas dalam ajang Olimpiade Sains dan Matematika Nasional tingkat SD tahun 2026.",
+      "Kompetisi yang diikuti oleh peserta dari berbagai daerah ini menguji ketajaman logika, soal cerita matematika, serta pengamatan eksperimen sains dasar. Al-Fatih tampil tenang dan konsisten sejak babak penyisihan hingga final.",
+      "Guru pembina olimpiade mengungkapkan rasa syukur atas kesungguhan Al-Fatih dalam berlatih setiap pekan bersama tim pembina sekolah dan dukungan penuh dari orang tua di rumah.",
+      "Pihak sekolah memberikan apresiasi beasiswa pendidikan untuk memotivasi seluruh siswa agar terus tekun mengasah potensi masing-masing."
     ]
   },
   {
     id: "4",
     slug: "market-day-menumbuhkan-wirausaha-islami",
-    title: "Kegiatan Market Day: Menumbuhkan Jiwa Wirausaha Islami Anak",
+    title: "Kegiatan Market Day: Melatih Kejujuran Bermuamalah Anak",
     date: "02 Agustus 2026",
     category: "Kewirausahaan",
     author: "Humas SDIT",
-    imageBg: "from-orange-400 via-amber-500 to-orange-600",
-    excerpt: "Melalui kegiatan Market Day, siswa belajar kejujuran bermuamalah, berhitung, serta indahnya berbagi dan bersedekah.",
+    imageBg: "from-sand to-gold-dark",
+    imageUrl: "/images/classroom-learning.jpg",
+    excerpt: "Melalui kegiatan Market Day, siswa belajar berhitung, menawarkan karya secara jujur, serta menyisihkan hasil penjualan untuk bersedekah.",
     content: [
-      "Halaman sekolah SDIT [Nama Sekolah] berubah menjadi pasar berseri yang penuh warna dalam acara tahunan Market Day. Para siswa kelas 3 dan 4 berperan sebagai penjual yang menjajakan aneka jajanan sehat, minuman segar, dan kreasi kerajinan tangan.",
-      "Program ini dirancang untuk mengasah keberanian berbicara, kemampuan literasi finansial, keterampilan berhitung, serta pemahaman adab bermuamalah secara akurat dan jujur sesuai tuntunan Islam.",
-      "Uniknya, sebagian dari keuntungan yang didapatkan dari hasil penjualan akan disalurkan sebagai dana sedekah untuk anak yatim di sekitar lingkungan sekolah. Hal ini mengajarkan bahwa berbisnis bukan hanya mencari keuntungan duniawi, melainkan juga sarana beramal jariyah.",
-      "Para pembeli yang terdiri dari siswa kelas lain, guru, dan orang tua sangat menikmati suasana kebersamaan dalam acara yang seru dan mengedukasi ini."
+      "Halaman sekolah SDIT [Nama Sekolah] tampak ramai dalam acara tahunan Market Day. Para siswa kelas 3 dan 4 berlatih menjadi penjual yang menjajakan aneka makanan sehat buatan rumah dan kerajinan tangan.",
+      "Program ini dirancang untuk melatih keberanian berbicara, keterampilan berhitung uang kembalian, serta pemahaman adab jual beli yang jujur sesuai tuntunan Islam.",
+      "Sebagian dari hasil penjualan disalurkan siswa sebagai dana infaq untuk anak yatim di sekitar lingkungan sekolah, sehingga anak belajar bahwa bekerja dan berniaga juga menjadi jalan berbagi manfaat.",
+      "Guru dan orang tua murid yang berkunjung menikmati suasana belajar kontekstual yang hangat dan penuh keceriaan."
     ]
   },
   {
     id: "5",
     slug: "program-tahfidz-camp-liburan-sekolah",
-    title: "Tahfidz Camp: Menghafal Al-Qur'an dengan Suasana Ceria & Seru",
+    title: "Tahfidz Camp: Murojaah Al-Qur'an dalam Suasana Kebersamaan",
     date: "25 Juli 2026",
     category: "Program Unggulan",
     author: "Tim Tahfidz",
-    imageBg: "from-emerald-500 via-teal-600 to-emerald-800",
-    excerpt: "Mengisi waktu liburan dengan kegiatan positif, siswa-siswi SDIT bersemangat menambah hafalan Al-Qur'an juz 30 dan 29.",
+    imageBg: "from-forest to-sage-dark",
+    imageUrl: "/images/program-quran.jpg",
+    excerpt: "Mengisi waktu libur sekolah dengan kegiatan positif, 80 siswa mengikuti Tahfidz Camp untuk menjaga hafalan Juz 30 dan Juz 29.",
     content: [
-      "Sebanyak 80 siswa mengikuti program khusus Tahfidz Camp yang diadakan selama 3 hari di lingkungan SDIT [Nama Sekolah]. Program ini dikemas dengan konsep fun-learning agar anak-anak menghafal Al-Qur'an tanpa merasa tertekan.",
-      "Selain murojaah dan penambahan hafalan baru, para peserta disuguhi berbagai kegiatan outdoor seperti outbond Islami, kuis Al-Qur'an interaktif, serta sesi motivasi penghafal Al-Qur'an.",
-      "Hasil dari Tahfidz Camp kali ini sangat mengagumkan. Sebagian besar peserta mampu mencapai target kenaikan hafalan hingga 1-2 maqra dengan kualitas tajwid dan makhraj yang baik.",
-      "Koordinator Tahfidz menegaskan bahwa kunci utama kesuksesan hafalan anak adalah rasa cinta dan kegembiraan ketika berinteraksi dengan ayat-ayat suci Al-Qur'an."
+      "Sebanyak 80 siswa mengikuti program Tahfidz Camp yang diadakan selama 3 hari di lingkungan SDIT [Nama Sekolah]. Program ini dikemas santai agar anak-anak menghafal Al-Qur'an dengan hati gembira.",
+      "Selain murojaah dan setoran hafalan baru bersama para ustadz dan ustadzah, para peserta mengikuti permainan ketangkasan kelompok dan kisah teladan para sahabat penghafal Al-Qur'an.",
+      "Sebagian besar peserta mampu menuntaskan target murojaah dengan perbaikan makhraj dan kelancaran tajwid yang baik.",
+      "Koordinator Tahfidz menekankan bahwa kunci utama anak cinta Al-Qur'an adalah suasana halaqah yang sabar, hangat, dan bebas dari tekanan."
     ]
   },
   {
     id: "6",
-    slug: "pemeriksaan-kesehatan-berkala-siswa",
-    title: "Pemeriksaan Kesehatan Berkala Kerjasama dengan Puskesmas",
+    slug: "gerakan-literasi-dan-pojok-baca-kelas",
+    title: "Gerakan Literasi Pagi & Penambahan Koleksi Pojok Baca Kelas",
     date: "18 Juli 2026",
-    category: "Kesehatan",
-    author: "Tim UKS",
-    imageBg: "from-teal-400 via-emerald-500 to-teal-600",
-    excerpt: "Menjaga kesehatan fisik siswa sejak dini, sekolah menyelenggarakan tes kesehatan gigi, mata, dan gizi secara gratis.",
+    category: "Akademik",
+    author: "Tim Perpustakaan",
+    imageBg: "from-sage to-sand",
+    imageUrl: "/images/program-language.jpg",
+    excerpt: "Setiap kelas kini dilengkapi rak buku cerita Islami dan ensiklopedia sains bergambar untuk membiasakan budaya membaca 15 menit sebelum pelajaran.",
     content: [
-      "SDIT [Nama Sekolah] bekerjasama dengan tim medis Puskesmas setempat mengadakan kegiatan Pemeriksaan Kesehatan Berkala untuk seluruh murid dari kelas 1 hingga 6.",
-      "Pemeriksaan meliputi cek kesehatan mata, kebersihan gigi dan mulut, pengukuran tinggi dan berat badan, serta skrining status gizi anak. Petugas medis juga memberikan edukasi pentingnya mengonsumsi makanan halal dan thayyib.",
-      "Kepala UKS menyampaikan bahwa fisik yang sehat dan kuat merupakan modal utama bagi siswa agar dapat beraktivitas dan beribadah dengan lancar (Al-Mukminul qawiyyu khairun wa ahabbu illallah).",
-      "Hasil pemeriksaan akan disampaikan secara pribadi kepada orang tua murid sebagai panduan pemantauan tumbuh kembang ananda di rumah."
+      "Untuk menumbuhkan kebiasaan membaca sejak kelas awal, SDIT [Nama Sekolah] menambah koleksi ratusan judul buku cerita Islami, buku pengetahuan alam, dan kamus bergambar di setiap pojok baca kelas.",
+      "Setiap pagi selama 15 menit setelah sesi tahfidz, siswa diajak memilih satu buku bacaan sesuai minat mereka, lalu menceritakan kembali ringkasannya secara lisan kepada teman sebangku.",
+      "Kepala Perpustakaan menyampaikan bahwa kebiasaan membaca buku fisik membantu melatih fokus anak serta memperkaya kosakata Bahasa Indonesia, Arab, dan Inggris.",
+      "Sekolah juga membuka kesempatan bagi orang tua yang ingin mewakafkan buku bacaan anak layak pakai untuk memperkaya koleksi perpustakaan."
     ]
   }
 ];

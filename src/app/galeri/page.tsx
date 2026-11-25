@@ -2,40 +2,26 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import {
-  ChevronRight,
-  Image as ImageIcon,
-  X,
-  ChevronLeft,
-  Calendar,
-  Tag,
-  Maximize2,
-  Video,
-} from "lucide-react";
+import { ChevronRight, X, ChevronLeft, Maximize2 } from "lucide-react";
 import { DUMMY_PHOTOS, DUMMY_VIDEOS, GalleryPhoto } from "@/data/galeri";
-import FadeIn from "@/components/ui/FadeIn";
 
 const CATEGORIES = [
   "Semua",
+  "Lingkungan Sekolah",
+  "Kegiatan Belajar",
   "Kegiatan Islami",
-  "Seni & Bakat",
-  "Sains & Teknologi",
-  "Olahraga",
-  "Edukasi Outdoor",
-  "Acara Sekolah",
+  "Sains & Literasi",
 ];
 
 export default function GaleriPage() {
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
 
-  // Filter photos by category
   const filteredPhotos =
     selectedCategory === "Semua"
       ? DUMMY_PHOTOS
       : DUMMY_PHOTOS.filter((photo) => photo.category === selectedCategory);
 
-  // Navigation inside Lightbox
   const handlePrev = useCallback(() => {
     if (activePhotoIndex === null) return;
     setActivePhotoIndex((prev) =>
@@ -54,7 +40,6 @@ export default function GaleriPage() {
     setActivePhotoIndex(null);
   };
 
-  // Keyboard navigation event listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (activePhotoIndex === null) return;
@@ -71,218 +56,178 @@ export default function GaleriPage() {
     activePhotoIndex !== null ? filteredPhotos[activePhotoIndex] : null;
 
   return (
-    <div className="space-y-10 sm:space-y-16 pb-10 sm:pb-16">
+    <div className="space-y-10 sm:space-y-14 pb-12 sm:pb-16">
       
-      {/* ---------------------------------------------------- */}
-      {/* 1. HEADER HALAMAN & BREADCRUMB */}
-      {/* ---------------------------------------------------- */}
-      <section className="bg-gradient-to-r from-emerald-900 via-teal-900 to-emerald-950 text-white py-8 sm:py-12 px-4 sm:px-6 lg:px-8 shape-curve-bottom relative overflow-hidden">
-        <div className="absolute top-0 right-1/4 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute inset-0 bg-islamic-pattern opacity-25"></div>
-
-        <div className="relative max-w-7xl mx-auto space-y-3 sm:space-y-4 text-center">
-          <FadeIn direction="up">
-            {/* Breadcrumb */}
-            <nav className="flex justify-center items-center gap-2 text-xs font-semibold text-emerald-200 mb-2">
-              <Link href="/" className="hover:text-amber-300 transition-colors">
+      {/* Editorial Header */}
+      <section className="pt-6 sm:pt-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-b border-sand/80 pb-6 sm:pb-8 space-y-4">
+            <nav className="flex items-center gap-2 text-xs font-sans text-charcoal-muted">
+              <Link href="/" className="hover:text-forest transition-colors">
                 Beranda
               </Link>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-              <span className="text-amber-300">Galeri Kegiatan</span>
+              <ChevronRight className="w-3.5 h-3.5 text-sand-dark" />
+              <span className="text-forest font-semibold">Galeri Kegiatan</span>
             </nav>
 
-            {/* Title & Subtitle */}
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-800/80 border border-emerald-600/60 text-amber-300 text-xs font-semibold">
-                <ImageIcon className="w-3.5 h-3.5" />
-                <span>Dokumentasi Visual</span>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-end">
+              <div className="lg:col-span-7 space-y-2">
+                <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                  Dokumentasi Visual
+                </span>
+                <h1 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-bold text-forest leading-tight mt-1">
+                  Galeri Kegiatan Siswa
+                </h1>
               </div>
-              <h1 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white">
-                Galeri Kegiatan Siswa
-              </h1>
-              <p className="text-slate-200 text-xs sm:text-base max-w-2xl mx-auto pt-1">
-                Abadikan momen keceriaan, kebersamaan belajar, serta berbagai pencapaian bermakna di SDIT [Nama Sekolah].
-              </p>
+              <div className="lg:col-span-5">
+                <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
+                  Arsip visual suasana belajar di kelas, halaqah Al-Qur'an, kegiatan sains, dan aktivitas harian siswa di SDIT [Nama Sekolah].
+                </p>
+              </div>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </section>
 
-      {/* ---------------------------------------------------- */}
-      {/* 2. CATEGORY TABS & GRID FOTO */}
-      {/* ---------------------------------------------------- */}
+      {/* Filter Bar & Photo Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        
-        {/* Category Filter Pills */}
-        <FadeIn direction="up">
-          <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-            {CATEGORIES.map((cat) => {
-              const isActive = selectedCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setActivePhotoIndex(null);
-                  }}
-                  className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 cursor-pointer ${
-                    isActive
-                      ? "bg-emerald-600 text-white shadow-md"
-                      : "bg-white text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 border border-slate-200"
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-        </FadeIn>
-
-        {/* Photo Grid (2 cols mobile, 3 cols tablet, 4 cols desktop) */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {filteredPhotos.map((photo, index) => (
-            <FadeIn key={photo.id} direction="up" delay={index * 0.06}>
-              <div
-                onClick={() => setActivePhotoIndex(index)}
-                className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group cursor-pointer flex flex-col justify-between h-full"
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-sand/80">
+          {CATEGORIES.map((cat) => {
+            const isActive = selectedCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setActivePhotoIndex(null);
+                }}
+                className={`px-3.5 py-2 text-xs font-sans font-semibold transition-colors shrink-0 cursor-pointer border-b-2 ${
+                  isActive
+                    ? "text-forest border-gold bg-sand/30"
+                    : "text-charcoal-muted border-transparent hover:text-forest"
+                }`}
               >
-                {/* Photo Thumbnail */}
-                <div
-                  className={`h-44 sm:h-52 bg-gradient-to-br ${photo.gradientBg} flex flex-col items-center justify-center p-4 text-center text-white relative overflow-hidden group-hover:scale-105 transition-transform duration-300`}
-                >
-                  <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white mb-2 shadow-xs group-hover:scale-110 transition-transform">
-                    <Maximize2 className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-bold bg-black/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full">
-                    {photo.category}
+                {cat}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Clean Documentary Photo Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {filteredPhotos.map((photo, index) => (
+            <figure
+              key={photo.id}
+              onClick={() => setActivePhotoIndex(index)}
+              className="group cursor-pointer space-y-2.5"
+            >
+              <div className="relative border border-sand bg-sand-light aspect-[4/3] overflow-hidden">
+                <img
+                  src={photo.imageUrl}
+                  alt={photo.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-forest/0 group-hover:bg-forest/25 transition-colors flex items-center justify-center">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-ivory text-forest p-2.5 shadow-md">
+                    <Maximize2 className="w-4 h-4" />
                   </span>
                 </div>
-
-                {/* Caption */}
-                <div className="p-4 space-y-1.5">
-                  <div className="flex items-center gap-1 text-[11px] text-slate-400">
-                    <Calendar className="w-3 h-3" />
-                    <span>{photo.date}</span>
-                  </div>
-                  <h3 className="font-heading font-bold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
-                    {photo.title}
-                  </h3>
-                </div>
               </div>
-            </FadeIn>
+              <figcaption className="space-y-1">
+                <div className="flex items-center justify-between text-[11px] font-sans text-charcoal-muted">
+                  <span className="font-semibold text-gold uppercase tracking-wider">{photo.category}</span>
+                  <span>{photo.date}</span>
+                </div>
+                <h3 className="font-heading font-bold text-sm sm:text-base text-forest group-hover:text-forest-light transition-colors leading-snug">
+                  {photo.title}
+                </h3>
+              </figcaption>
+            </figure>
           ))}
         </div>
-
       </section>
 
-      {/* ---------------------------------------------------- */}
-      {/* LIGHTBOX MODAL POPUP */}
-      {/* ---------------------------------------------------- */}
+      {/* Lightbox Modal */}
       {activePhoto && activePhotoIndex !== null && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-          
-          {/* Close Button */}
+        <div className="fixed inset-0 z-50 bg-forest-dark/90 backdrop-blur-xs flex items-center justify-center p-4">
           <button
             type="button"
             onClick={handleClose}
             aria-label="Tutup modal"
-            className="absolute top-4 right-4 z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+            className="absolute top-4 right-4 z-50 p-2.5 bg-ivory text-forest hover:bg-gold transition-colors cursor-pointer"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
 
-          {/* Prev Navigation Button */}
           <button
             type="button"
             onClick={handlePrev}
             aria-label="Foto sebelumnya"
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-2.5 bg-ivory/90 text-forest hover:bg-gold transition-colors cursor-pointer"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
 
-          {/* Next Navigation Button */}
           <button
             type="button"
             onClick={handleNext}
             aria-label="Foto berikutnya"
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-2.5 bg-ivory/90 text-forest hover:bg-gold transition-colors cursor-pointer"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Modal Container */}
-          <div className="relative max-w-4xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl space-y-4 p-6 sm:p-8 animate-in zoom-in-95 duration-200">
-            
-            {/* Image Preview Large Container */}
-            <div
-              className={`w-full h-72 sm:h-96 rounded-2xl bg-gradient-to-br ${activePhoto.gradientBg} flex flex-col items-center justify-center p-6 text-white text-center shadow-inner relative`}
-            >
-              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mb-3">
-                <ImageIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-white">
-                [Tampilan Foto Besar Placeholder]
-              </h3>
-              <p className="text-xs text-amber-200 font-medium mt-1">
-                Dokumentasi Resmi SDIT [Nama Sekolah]
-              </p>
+          <div className="relative max-w-4xl w-full bg-ivory border border-sand p-4 sm:p-6 space-y-4">
+            <div className="w-full aspect-[16/10] bg-sand-light overflow-hidden border border-sand">
+              <img
+                src={activePhoto.imageUrl}
+                alt={activePhoto.title}
+                className="w-full h-full object-contain bg-forest-dark/5"
+              />
             </div>
 
-            {/* Modal Caption Details */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pt-1">
               <div className="space-y-1">
-                <div className="flex items-center gap-2 text-xs text-slate-500">
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-100">
-                    <Tag className="w-3 h-3" />
-                    {activePhoto.category}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                    {activePhoto.date}
-                  </span>
-                </div>
-                <h2 className="font-heading font-bold text-lg text-slate-900">
+                <span className="text-[11px] font-sans font-semibold text-gold uppercase tracking-wider">
+                  {activePhoto.category} • {activePhoto.date}
+                </span>
+                <h2 className="font-heading font-bold text-lg text-forest">
                   {activePhoto.title}
                 </h2>
+                <p className="font-sans text-xs text-charcoal-muted">
+                  {activePhoto.caption}
+                </p>
               </div>
-
-              <div className="text-xs text-slate-400 font-medium">
-                {activePhotoIndex + 1} dari {filteredPhotos.length} Foto
+              <div className="text-xs font-sans text-charcoal-muted shrink-0">
+                {activePhotoIndex + 1} / {filteredPhotos.length}
               </div>
             </div>
-
           </div>
         </div>
       )}
 
-      {/* ---------------------------------------------------- */}
-      {/* 3. VIDEO KEGIATAN SEKOLAH */}
-      {/* ---------------------------------------------------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-slate-200/60 space-y-8">
-        
-        <FadeIn direction="up">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-semibold mb-1">
-              <Video className="w-3.5 h-3.5 text-amber-700" />
-              <span>Kanal Video</span>
+      {/* Video Section (Sand Block Separation) */}
+      <section className="bg-sand-light/60 border-t border-sand py-10 sm:py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-sand pb-3">
+            <div>
+              <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                Liputan Video
+              </span>
+              <h2 className="font-heading text-xl sm:text-3xl font-bold text-forest mt-0.5">
+                Video Kegiatan Sekolah
+              </h2>
             </div>
-            <h2 className="font-heading text-3xl font-extrabold text-slate-900">
-              Video Kegiatan Sekolah
-            </h2>
-            <p className="text-slate-600 text-sm">
-              Saksikan tayangan liputan kegiatan, profil sekolah, dan penampilan kreasi seni santri SDIT.
+            <p className="font-sans text-xs sm:text-sm text-charcoal-muted max-w-md">
+              Tayangan dokumentasi profil sekolah dan kegiatan pembelajaran siswa.
             </p>
           </div>
-        </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {DUMMY_VIDEOS.map((video, idx) => (
-            <FadeIn key={video.id} direction="up" delay={idx * 0.15}>
-              <div className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col justify-between h-full">
-                {/* Responsive YouTube Embed Container */}
-                <div className="relative w-full aspect-video bg-slate-900">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {DUMMY_VIDEOS.map((video) => (
+              <div key={video.id} className="bg-ivory border border-sand space-y-3 p-3">
+                <div className="relative w-full aspect-video bg-forest-dark">
                   <iframe
                     className="w-full h-full"
                     src={`https://www.youtube.com/embed/${video.youtubeId}`}
@@ -291,28 +236,19 @@ export default function GaleriPage() {
                     allowFullScreen
                   ></iframe>
                 </div>
-
-                {/* Video Title & Meta */}
-                <div className="p-5 space-y-2">
-                  <div className="flex items-center justify-between text-xs text-slate-500">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-100">
-                      <Tag className="w-3 h-3" />
-                      {video.category}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      {video.date}
-                    </span>
+                <div className="px-1 pb-1 space-y-1">
+                  <div className="flex items-center justify-between text-[11px] font-sans text-charcoal-muted">
+                    <span className="font-semibold text-gold uppercase tracking-wider">{video.category}</span>
+                    <span>{video.date}</span>
                   </div>
-                  <h3 className="font-heading font-bold text-sm text-slate-900 leading-snug group-hover:text-emerald-700 transition-colors">
+                  <h3 className="font-heading font-bold text-sm text-forest leading-snug">
                     {video.title}
                   </h3>
                 </div>
               </div>
-            </FadeIn>
-          ))}
+            ))}
+          </div>
         </div>
-
       </section>
 
     </div>
