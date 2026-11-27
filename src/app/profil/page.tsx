@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ChevronRight, ArrowRight } from "lucide-react";
+import { SCHOOL_CONFIG } from "@/data/school";
 
 export const metadata = {
   title: "Profil Sekolah",
-  description: "Sejarah, Visi Misi, Nilai-nilai Islam Terpadu, dan Fasilitas SDIT [Nama Sekolah]",
+  description: `Sejarah, Visi Misi, Tim Pendidik, dan Fasilitas ${SCHOOL_CONFIG.name}`,
 };
 
 export default function ProfilPage() {
@@ -87,9 +88,7 @@ export default function ProfilPage() {
   return (
     <div className="space-y-10 sm:space-y-14 pb-12 sm:pb-16">
       
-      {/* ---------------------------------------------------- */}
-      {/* 1. HEADER HALAMAN EDITORIAL (BRIGHT IVORY) */}
-      {/* ---------------------------------------------------- */}
+      {/* Header */}
       <section className="pt-6 sm:pt-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-b border-sand/80 pb-6 sm:pb-8 space-y-4">
@@ -104,7 +103,7 @@ export default function ProfilPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-end">
               <div className="lg:col-span-7 space-y-2">
                 <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
-                  Tentang Sekolah
+                  Tentang Sekolah | {SCHOOL_CONFIG.accreditation.label}
                 </span>
                 <h1 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-bold text-forest leading-tight mt-1">
                   Profil, Sejarah & Visi Pendidikan
@@ -112,7 +111,7 @@ export default function ProfilPage() {
               </div>
               <div className="lg:col-span-5">
                 <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
-                  Perjalanan pendirian, landasan filosofis, nilai-nilai karakter Islam Terpadu, serta sarana belajar di SDIT [Nama Sekolah].
+                  Perjalanan pendirian, tim pendidik, nilai karakter Islam Terpadu, serta sarana belajar di {SCHOOL_CONFIG.name}.
                 </p>
               </div>
             </div>
@@ -120,9 +119,7 @@ export default function ProfilPage() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------- */}
-      {/* 2. SEJARAH SINGKAT (EDITORIAL ESSAY + FOTO NYATA) */}
-      {/* ---------------------------------------------------- */}
+      {/* Sejarah Singkat */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
@@ -130,12 +127,12 @@ export default function ProfilPage() {
             <div className="border border-sand bg-sand-light aspect-[16/10] overflow-hidden">
               <img
                 src="/images/campus-hero.jpg"
-                alt="Lingkungan Kampus SDIT [Nama Sekolah]"
+                alt={`Lingkungan Kampus ${SCHOOL_CONFIG.name}`}
                 className="w-full h-full object-cover"
               />
             </div>
             <p className="text-[11px] font-sans text-charcoal-muted">
-              Lingkungan belajar SDIT [Nama Sekolah], berdiri sejak tahun 2010.
+              Lingkungan belajar {SCHOOL_CONFIG.name}, berdiri sejak tahun {SCHOOL_CONFIG.accreditation.foundedYear}.
             </p>
           </div>
 
@@ -151,10 +148,10 @@ export default function ProfilPage() {
 
             <div className="space-y-3.5 font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
               <p>
-                SDIT [Nama Sekolah] didirikan pada tahun 2010 oleh para praktisi pendidikan dan tokoh masyarakat yang peduli terhadap pentingnya pembinaan karakter anak di usia sekolah dasar. Sekolah ini hadir untuk menjawab kebutuhan orang tua akan pendidikan yang memadukan ilmu pengetahuan umum dengan pemahaman agama yang kuat.
+                {SCHOOL_CONFIG.name} didirikan pada tahun {SCHOOL_CONFIG.accreditation.foundedYear} oleh para praktisi pendidikan dan tokoh masyarakat yang peduli terhadap pentingnya pembinaan karakter anak di usia sekolah dasar. Sekolah ini hadir untuk menjawab kebutuhan orang tua akan pendidikan yang memadukan ilmu pengetahuan umum dengan pemahaman agama yang kuat.
               </p>
               <p>
-                Seiring berjalannya waktu, SDIT [Nama Sekolah] terus berkembang dengan memadukan Kurikulum Nasional bersama kurikulum khas Sekolah Dasar Islam Terpadu (SIT). Proses belajar dirancang secara interaktif, ramah anak, dan memperhatikan perkembangan kecerdasan maupun adab keseharian siswa.
+                Seiring berjalannya waktu, {SCHOOL_CONFIG.name} terus berkembang dengan memadukan Kurikulum Nasional bersama kurikulum khas Sekolah Dasar Islam Terpadu (SIT). Proses belajar dirancang secara interaktif, ramah anak, dan memperhatikan perkembangan kecerdasan maupun adab keseharian siswa.
               </p>
               <p>
                 Hingga kini, kami telah meluluskan berbagai angkatan alumni yang melanjutkan pendidikan ke SMP maupun pesantren pilihan, dengan bekal akhlak baik serta hafalan Al-Qur'an yang terjaga.
@@ -165,9 +162,7 @@ export default function ProfilPage() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------- */}
-      {/* 3. VISI & MISI (FOREST BLOCK + NUMBERED INDEX) */}
-      {/* ---------------------------------------------------- */}
+      {/* Visi & Misi */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="border-t border-sand/80 pt-8 sm:pt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
@@ -212,9 +207,47 @@ export default function ProfilPage() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------- */}
-      {/* 4. NILAI-NILAI ISLAM TERPADU (EDITORIAL COLUMNS) */}
-      {/* ---------------------------------------------------- */}
+      {/* Pimpinan & Koordinator Pendidik (Trust Signal) */}
+      <section className="bg-sand-light/60 border-y border-sand py-10 sm:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-sand pb-3">
+            <div>
+              <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                Tenaga Pendidik
+              </span>
+              <h2 className="font-heading text-xl sm:text-3xl font-bold text-forest mt-0.5">
+                Pimpinan & Koordinator Bidang
+              </h2>
+            </div>
+            <p className="font-sans text-xs sm:text-sm text-charcoal-muted max-w-md">
+              Didampingi oleh guru-guru lulusan kependidikan dan penghafal Al-Qur'an yang berpengalaman membina anak usia sekolah dasar.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {SCHOOL_CONFIG.educators.map((person, idx) => (
+              <div key={idx} className="bg-ivory border border-sand p-5 space-y-3">
+                <div className="w-11 h-11 bg-forest text-gold font-heading font-bold text-sm flex items-center justify-center">
+                  {person.initials}
+                </div>
+                <div>
+                  <h3 className="font-heading font-bold text-base text-forest leading-snug">
+                    {person.name}
+                  </h3>
+                  <p className="text-xs font-sans font-semibold text-gold mt-0.5">
+                    {person.role}
+                  </p>
+                </div>
+                <p className="text-xs font-sans text-charcoal-muted pt-2 border-t border-sand/60">
+                  {person.focus}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Nilai-nilai Islam Terpadu */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="border-b border-sand/80 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
           <div>
@@ -250,9 +283,7 @@ export default function ProfilPage() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------- */}
-      {/* 5. FASILITAS SEKOLAH (REAL PHOTOGRAPHY + DIRECTORY) */}
-      {/* ---------------------------------------------------- */}
+      {/* Fasilitas Sekolah */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="border-b border-sand/80 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
           <div>
@@ -304,9 +335,7 @@ export default function ProfilPage() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------- */}
-      {/* 6. CLOSING INVITATION */}
-      {/* ---------------------------------------------------- */}
+      {/* Closing Invitation */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="border-t border-sand/80 pt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
@@ -318,10 +347,10 @@ export default function ProfilPage() {
             </p>
           </div>
           <Link
-            href="/kontak"
+            href="/kontak#kunjungan"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 font-sans font-semibold text-xs uppercase tracking-wider text-ivory bg-forest hover:bg-forest-light transition-all shrink-0"
           >
-            <span>Hubungi Kami</span>
+            <span>Jadwalkan Kunjungan</span>
             <ArrowRight className="w-3.5 h-3.5 text-gold" />
           </Link>
         </div>

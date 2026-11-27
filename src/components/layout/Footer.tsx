@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { GraduationCap, MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
+import { SCHOOL_CONFIG, getWhatsAppUrl } from "@/data/school";
 
 export default function Footer() {
   return (
@@ -15,10 +16,10 @@ export default function Footer() {
               </div>
               <div className="flex flex-col text-left">
                 <span className="font-heading font-bold text-lg text-ivory tracking-tight">
-                  SDIT [Nama Sekolah]
+                  {SCHOOL_CONFIG.name}
                 </span>
                 <span className="text-[10px] font-sans font-semibold text-gold tracking-widest uppercase">
-                  Sekolah Dasar Islam Terpadu
+                  {SCHOOL_CONFIG.tagline}
                 </span>
               </div>
             </div>
@@ -29,7 +30,7 @@ export default function Footer() {
             {/* Social Media Links */}
             <div className="flex items-center justify-center md:justify-start gap-2.5 pt-1">
               <a
-                href="#"
+                href={SCHOOL_CONFIG.social.instagramUrl}
                 className="w-8 h-8 sm:w-9 sm:h-9 bg-forest-light/50 hover:bg-gold text-ivory hover:text-forest flex items-center justify-center transition-colors duration-200"
                 aria-label="Instagram"
               >
@@ -39,7 +40,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="#"
+                href={SCHOOL_CONFIG.social.youtubeUrl}
                 className="w-8 h-8 sm:w-9 sm:h-9 bg-forest-light/50 hover:bg-gold text-ivory hover:text-forest flex items-center justify-center transition-colors duration-200"
                 aria-label="YouTube"
               >
@@ -49,7 +50,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="#"
+                href={SCHOOL_CONFIG.social.facebookUrl}
                 className="w-8 h-8 sm:w-9 sm:h-9 bg-forest-light/50 hover:bg-gold text-ivory hover:text-forest flex items-center justify-center transition-colors duration-200"
                 aria-label="Facebook"
               >
@@ -59,7 +60,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://wa.me/6281234567890"
+                href={getWhatsAppUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 sm:w-9 sm:h-9 bg-forest-light/50 hover:bg-gold text-ivory hover:text-forest flex items-center justify-center transition-colors duration-200"
@@ -122,19 +123,19 @@ export default function Footer() {
             <ul className="space-y-3 text-xs sm:text-sm text-ivory/75 font-sans">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-gold shrink-0 mt-0.5" />
-                <span>Jl. Pendidikan Islam No. 123, Kelurahan Mulia, Kota Bandung 40123</span>
+                <span>{SCHOOL_CONFIG.contact.address}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-gold shrink-0" />
-                <span>(021) 1234-5678 / 0812-3456-7890</span>
+                <span>{SCHOOL_CONFIG.contact.phone} / {SCHOOL_CONFIG.contact.whatsappDisplay}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-gold shrink-0" />
-                <span>info@sdit-sekolah.sch.id</span>
+                <span>{SCHOOL_CONFIG.contact.email}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Clock className="w-4 h-4 text-gold shrink-0" />
-                <span>Senin s.d. Jumat, 07.00 - 15.30 WIB</span>
+                <span>{SCHOOL_CONFIG.contact.hoursWeekday}</span>
               </li>
             </ul>
           </div>
@@ -142,16 +143,18 @@ export default function Footer() {
           {/* Column 4: Call to Action / Info (Sembunyi di Mobile, Tampil di Desktop) */}
           <div className="hidden md:block space-y-3.5 bg-forest-dark/70 p-5 border border-sand/20">
             <h3 className="font-heading font-bold text-base text-gold">
-              Kunjungan & PPDB
+              {SCHOOL_CONFIG.ppdb.isOpen ? `PPDB ${SCHOOL_CONFIG.ppdb.academicYear}` : "Kunjungan & PPDB"}
             </h3>
             <p className="text-xs text-ivory/75 font-sans leading-relaxed">
-              Informasi jadwal penerimaan peserta didik baru, panduan observasi, serta layanan kunjungan orang tua ke sekolah.
+              {SCHOOL_CONFIG.ppdb.isOpen
+                ? "Pendaftaran peserta didik baru sedang dibuka. Konsultasikan jadwal observasi anak dengan panitia kami."
+                : "Jadwalkan kunjungan ke sekolah atau lihat panduan penerimaan peserta didik baru."}
             </p>
             <Link
-              href="/ppdb"
+              href={SCHOOL_CONFIG.ppdb.isOpen ? "/ppdb" : "/kontak#kunjungan"}
               className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 font-sans font-semibold text-xs text-forest bg-gold hover:bg-gold-light transition-colors uppercase tracking-wider"
             >
-              Informasi PPDB
+              {SCHOOL_CONFIG.ppdb.isOpen ? "Daftar PPDB" : "Jadwalkan Kunjungan"}
             </Link>
           </div>
 
@@ -159,8 +162,8 @@ export default function Footer() {
 
         {/* Bottom Bar / Copyright */}
         <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between text-center sm:text-left gap-4 text-xs font-sans text-ivory/60">
-          <p>© {new Date().getFullYear()} SDIT [Nama Sekolah]. Hak Cipta Dilindungi.</p>
-          <p className="text-ivory/50">Sekolah Dasar Islam Terpadu</p>
+          <p>© {new Date().getFullYear()} {SCHOOL_CONFIG.name}. Hak Cipta Dilindungi.</p>
+          <p className="text-ivory/50">{SCHOOL_CONFIG.tagline}</p>
         </div>
       </div>
     </footer>

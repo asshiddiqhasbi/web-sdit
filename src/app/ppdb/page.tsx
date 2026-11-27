@@ -2,16 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Send, Check, AlertCircle, Calendar, ArrowRight } from "lucide-react";
-
-/**
- * Pengaturan status PPDB:
- * Ubah ke `true` saat musim pendaftaran resmi dibuka agar formulir pendaftaran online aktif.
- * Dalam kondisi normal/netral (`false`), halaman menampilkan panduan referensi dan formulir daftar tunggu notifikasi.
- */
-const IS_PPDB_OPEN = false;
+import { ChevronRight, Send, Check, AlertCircle, Calendar, ArrowRight, MessageCircle } from "lucide-react";
+import { SCHOOL_CONFIG, getWhatsAppUrl } from "@/data/school";
 
 export default function PPDBPage() {
+  const isPpdbOpen = SCHOOL_CONFIG.ppdb.isOpen;
+
   const [formData, setFormData] = useState({
     namaSiswa: "",
     tempatLahir: "",
@@ -100,6 +96,10 @@ export default function PPDBPage() {
     setWaitlistSubmitted(true);
   };
 
+  const waPpdbUrl = getWhatsAppUrl(
+    `Assalamu'alaikum Panitia PPDB ${SCHOOL_CONFIG.name}, saya ingin menanyakan informasi pendaftaran siswa baru.`
+  );
+
   const steps = [
     { num: "01", title: "Pengisian Formulir", desc: "Melengkapi data calon siswa secara online maupun langsung di sekretariat." },
     { num: "02", title: "Verifikasi Berkas", desc: "Pemeriksaan akta kelahiran, kartu keluarga, dan kelengkapan dokumen." },
@@ -134,31 +134,41 @@ export default function PPDBPage() {
               </div>
               <div className="lg:col-span-5">
                 <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
-                  Panduan resmi mengenai jalur penerimaan, persyaratan dokumen, tahapan seleksi, serta rincian estimasi biaya pendidikan di SDIT [Nama Sekolah].
+                  Panduan resmi mengenai jalur penerimaan, persyaratan dokumen, tahapan seleksi, serta rincian estimasi biaya pendidikan di {SCHOOL_CONFIG.name}.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Seasonal Status Notice */}
-          {!IS_PPDB_OPEN && (
-            <div className="bg-sand-light/80 border-l-4 border-gold p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          {/* Seasonal Status Notice + WhatsApp-first CTA */}
+          {!isPpdbOpen && (
+            <div className="bg-sand-light/80 border-l-4 border-gold p-5 sm:p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div className="space-y-1 max-w-3xl">
                 <div className="flex items-center gap-2 text-xs font-sans font-bold text-forest uppercase tracking-wider">
                   <Calendar className="w-4 h-4 text-gold" />
                   <span>Status Saat Ini: Di Luar Masa Pendaftaran Aktif</span>
                 </div>
                 <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
-                  Penerimaan peserta didik baru SDIT [Nama Sekolah] dibuka secara berkala setiap bulan November hingga April. Informasi ketentuan dan estimasi biaya di bawah ini tetap dapat digunakan orang tua sebagai panduan persiapan awal.
+                  Penerimaan peserta didik baru {SCHOOL_CONFIG.name} dibuka secara berkala setiap {SCHOOL_CONFIG.ppdb.generalPeriod}. Informasi ketentuan dan estimasi biaya di bawah ini tetap dapat digunakan orang tua sebagai panduan persiapan awal.
                 </p>
               </div>
-              <a
-                href="#informasi-ppdb"
-                className="inline-flex items-center gap-2 px-4 py-2.5 font-sans font-semibold text-xs text-forest border border-forest/30 bg-ivory hover:bg-sand/40 transition-colors shrink-0"
-              >
-                <span>Titip Kontak Informasi</span>
-                <ArrowRight className="w-3.5 h-3.5 text-gold" />
-              </a>
+              <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                <a
+                  href={waPpdbUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 font-sans font-semibold text-xs text-ivory bg-forest hover:bg-forest-light transition-colors"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-gold" />
+                  <span>Tanya Panitia via WhatsApp</span>
+                </a>
+                <a
+                  href="#informasi-ppdb"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 font-sans font-semibold text-xs text-forest border border-forest/30 bg-ivory hover:bg-sand/40 transition-colors"
+                >
+                  <span>Daftar Tunggu</span>
+                </a>
+              </div>
             </div>
           )}
         </div>
@@ -245,7 +255,7 @@ export default function PPDBPage() {
         </div>
       </section>
 
-      {/* Alur Pendaftaran (5 Steps Editorial Strip) */}
+      {/* Alur Pendaftaran */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="border-b border-sand/80 pb-3">
           <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
@@ -273,18 +283,26 @@ export default function PPDBPage() {
       <section id="informasi-ppdb" className="bg-sand-light/60 border-y border-sand py-10 sm:py-14 scroll-mt-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {IS_PPDB_OPEN ? (
+          {isPpdbOpen ? (
             <div className="bg-ivory border border-sand p-6 sm:p-10 space-y-6">
-              <div className="border-b border-sand pb-4 space-y-1">
-                <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
-                  Formulir Resmi
-                </span>
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-forest">
-                  Formulir Pendaftaran Online
-                </h2>
-                <p className="text-xs sm:text-sm font-sans text-charcoal-muted">
-                  Silakan lengkapi data calon siswa di bawah ini dengan benar.
-                </p>
+              <div className="border-b border-sand pb-4 space-y-1 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                <div>
+                  <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                    Formulir Resmi {SCHOOL_CONFIG.ppdb.academicYear}
+                  </span>
+                  <h2 className="font-heading text-2xl sm:text-3xl font-bold text-forest">
+                    Formulir Pendaftaran Online
+                  </h2>
+                </div>
+                <a
+                  href={waPpdbUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs font-sans font-semibold text-forest hover:text-gold"
+                >
+                  <MessageCircle className="w-4 h-4 text-gold" />
+                  <span>Butuh bantuan? Chat Panitia PPDB</span>
+                </a>
               </div>
 
               {isSubmitted ? (
@@ -447,16 +465,18 @@ export default function PPDBPage() {
                   Daftar Tunggu Informasi PPDB
                 </h2>
                 <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
-                  Karena pendaftaran sedang ditutup, orang tua dapat meninggalkan kontak agar sekretariat dapat mengirimkan informasi saat gelombang pendaftaran berikutnya dibuka, atau langsung menjadwalkan kunjungan sekolah.
+                  Karena pendaftaran sedang ditutup, orang tua dapat langsung menghubungi Panitia via WhatsApp atau meninggalkan nomor kontak agar kami kabari saat gelombang baru dibuka.
                 </p>
-                <div className="pt-1">
-                  <Link
-                    href="/kontak"
-                    className="inline-flex items-center gap-2 text-xs font-sans font-bold text-forest hover:text-gold transition-colors"
+                <div className="pt-2">
+                  <a
+                    href={waPpdbUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 font-sans font-semibold text-xs text-forest border border-forest/30 hover:bg-sand/40 transition-colors"
                   >
-                    <span>Atau hubungi sekretariat langsung</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-gold" />
-                  </Link>
+                    <MessageCircle className="w-3.5 h-3.5 text-gold" />
+                    <span>Konsultasi via WhatsApp</span>
+                  </a>
                 </div>
               </div>
 

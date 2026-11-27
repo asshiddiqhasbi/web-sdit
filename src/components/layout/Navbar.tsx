@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, GraduationCap, ChevronRight } from "lucide-react";
+import { SCHOOL_CONFIG } from "@/data/school";
 
 const NAV_ITEMS = [
   { label: "Beranda", href: "/" },
@@ -17,6 +18,10 @@ const NAV_ITEMS = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+
+  const primaryCta = SCHOOL_CONFIG.ppdb.isOpen
+    ? { label: "Daftar PPDB", href: "/ppdb" }
+    : { label: "Jadwalkan Kunjungan", href: "/kontak#kunjungan" };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -44,10 +49,10 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col shrink-0">
               <span className="font-heading font-bold text-base sm:text-lg text-forest tracking-tight leading-tight whitespace-nowrap">
-                SDIT [Nama Sekolah]
+                {SCHOOL_CONFIG.name}
               </span>
               <span className="text-[10px] font-sans font-medium tracking-wider text-charcoal-muted uppercase whitespace-nowrap">
-                Sekolah Dasar Islam Terpadu
+                {SCHOOL_CONFIG.tagline}
               </span>
             </div>
           </Link>
@@ -73,18 +78,14 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Desktop Neutral Action Button */}
+          {/* Desktop Purposeful CTA */}
           <div className="hidden lg:flex items-center shrink-0">
             <Link
-              href="/kontak"
+              href={primaryCta.href}
               onClick={handleNavClick}
-              className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 font-sans font-semibold text-xs uppercase tracking-wider transition-all whitespace-nowrap ${
-                pathname.startsWith("/kontak")
-                  ? "bg-forest-dark text-gold"
-                  : "bg-forest hover:bg-forest-light text-ivory"
-              }`}
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 font-sans font-semibold text-xs uppercase tracking-wider bg-forest hover:bg-forest-light text-ivory transition-all whitespace-nowrap"
             >
-              <span>Hubungi Kami</span>
+              <span>{primaryCta.label}</span>
               <ChevronRight className="w-3.5 h-3.5 text-gold" />
             </Link>
           </div>
@@ -107,7 +108,7 @@ export default function Navbar() {
       {isOpen && (
         <div className="lg:hidden bg-ivory border-b border-sand/80 shadow-lg px-4 pt-2 pb-6 space-y-2">
           <nav className="flex flex-col divide-y divide-sand/40">
-            {NAV_ITEMS.map((item) => {
+            {[...NAV_ITEMS, { label: "Kontak", href: "/kontak" }].map((item) => {
               const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
               return (
                 <Link
@@ -129,11 +130,11 @@ export default function Navbar() {
           
           <div className="pt-3 mt-2">
             <Link
-              href="/kontak"
+              href={primaryCta.href}
               onClick={handleNavClick}
               className="w-full flex items-center justify-center gap-2 px-5 py-3 font-sans font-semibold text-xs uppercase tracking-wider text-ivory bg-forest hover:bg-forest-light transition-all"
             >
-              <span>Hubungi Sekretariat</span>
+              <span>{primaryCta.label}</span>
               <ChevronRight className="w-4 h-4 text-gold" />
             </Link>
           </div>

@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { getAllNews } from "@/data/berita";
+import { SCHOOL_CONFIG } from "@/data/school";
 import BeritaFilterGrid from "@/components/ui/BeritaFilterGrid";
 
 export const metadata = {
   title: "Berita & Kegiatan",
-  description: "Kabar terbaru, kegiatan siswa, dan informasi resmi dari SDIT [Nama Sekolah]",
+  description: `Kabar terbaru, kegiatan siswa, dan informasi resmi dari ${SCHOOL_CONFIG.name}`,
 };
 
 export default function BeritaPage() {
@@ -37,7 +38,7 @@ export default function BeritaPage() {
               </div>
               <div className="lg:col-span-5">
                 <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
-                  Catatan kegiatan pembelajaran, dokumentasi acara siswa, prestasi akademik, serta pengumuman resmi dari SDIT [Nama Sekolah].
+                  Catatan kegiatan pembelajaran, dokumentasi acara siswa, prestasi akademik, serta pengumuman resmi dari {SCHOOL_CONFIG.name}.
                 </p>
               </div>
             </div>
@@ -45,9 +46,20 @@ export default function BeritaPage() {
         </div>
       </section>
 
-      {/* Filterable News & Journal Feed */}
+      {/* Filterable News & Journal Feed (with clean Empty State) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <BeritaFilterGrid items={allNews} />
+        {allNews.length === 0 ? (
+          <div className="border border-sand bg-ivory-light p-8 sm:p-12 text-center space-y-2">
+            <h2 className="font-heading font-bold text-xl text-forest">
+              Belum Ada Artikel Dipublikasikan
+            </h2>
+            <p className="font-sans text-xs sm:text-sm text-charcoal-muted max-w-md mx-auto">
+              Arsip berita dan pengumuman sekolah akan tampil otomatis di halaman ini setelah artikel pertama ditambahkan.
+            </p>
+          </div>
+        ) : (
+          <BeritaFilterGrid items={allNews} />
+        )}
       </section>
 
     </div>

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { ChevronRight, X, ChevronLeft, Maximize2 } from "lucide-react";
 import { DUMMY_PHOTOS, DUMMY_VIDEOS, GalleryPhoto } from "@/data/galeri";
+import { SCHOOL_CONFIG } from "@/data/school";
 
 const CATEGORIES = [
   "Semua",
@@ -81,7 +82,7 @@ export default function GaleriPage() {
               </div>
               <div className="lg:col-span-5">
                 <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
-                  Arsip visual suasana belajar di kelas, halaqah Al-Qur'an, kegiatan sains, dan aktivitas harian siswa di SDIT [Nama Sekolah].
+                  Arsip visual suasana belajar di kelas, halaqah Al-Qur'an, kegiatan sains, dan aktivitas harian siswa di {SCHOOL_CONFIG.name}.
                 </p>
               </div>
             </div>
@@ -89,63 +90,75 @@ export default function GaleriPage() {
         </div>
       </section>
 
-      {/* Filter Bar & Photo Grid */}
+      {/* Filter Bar & Photo Grid (with Empty State) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-sand/80">
-          {CATEGORIES.map((cat) => {
-            const isActive = selectedCategory === cat;
-            return (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => {
-                  setSelectedCategory(cat);
-                  setActivePhotoIndex(null);
-                }}
-                className={`px-3.5 py-2 text-xs font-sans font-semibold transition-colors shrink-0 cursor-pointer border-b-2 ${
-                  isActive
-                    ? "text-forest border-gold bg-sand/30"
-                    : "text-charcoal-muted border-transparent hover:text-forest"
-                }`}
-              >
-                {cat}
-              </button>
-            );
-          })}
-        </div>
+        {DUMMY_PHOTOS.length === 0 ? (
+          <div className="border border-sand bg-ivory-light p-8 sm:p-12 text-center space-y-2">
+            <h2 className="font-heading font-bold text-xl text-forest">
+              Belum Ada Dokumentasi Foto
+            </h2>
+            <p className="font-sans text-xs sm:text-sm text-charcoal-muted max-w-md mx-auto">
+              Galeri foto kegiatan sekolah akan tampil secara otomatis setelah foto ditambahkan ke data galeri.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-sand/80">
+              {CATEGORIES.map((cat) => {
+                const isActive = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => {
+                      setSelectedCategory(cat);
+                      setActivePhotoIndex(null);
+                    }}
+                    className={`px-3.5 py-2 text-xs font-sans font-semibold transition-colors shrink-0 cursor-pointer border-b-2 ${
+                      isActive
+                        ? "text-forest border-gold bg-sand/30"
+                        : "text-charcoal-muted border-transparent hover:text-forest"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
 
-        {/* Clean Documentary Photo Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredPhotos.map((photo, index) => (
-            <figure
-              key={photo.id}
-              onClick={() => setActivePhotoIndex(index)}
-              className="group cursor-pointer space-y-2.5"
-            >
-              <div className="relative border border-sand bg-sand-light aspect-[4/3] overflow-hidden">
-                <img
-                  src={photo.imageUrl}
-                  alt={photo.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-forest/0 group-hover:bg-forest/25 transition-colors flex items-center justify-center">
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-ivory text-forest p-2.5 shadow-md">
-                    <Maximize2 className="w-4 h-4" />
-                  </span>
-                </div>
-              </div>
-              <figcaption className="space-y-1">
-                <div className="flex items-center justify-between text-[11px] font-sans text-charcoal-muted">
-                  <span className="font-semibold text-gold uppercase tracking-wider">{photo.category}</span>
-                  <span>{photo.date}</span>
-                </div>
-                <h3 className="font-heading font-bold text-sm sm:text-base text-forest group-hover:text-forest-light transition-colors leading-snug">
-                  {photo.title}
-                </h3>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {filteredPhotos.map((photo, index) => (
+                <figure
+                  key={photo.id}
+                  onClick={() => setActivePhotoIndex(index)}
+                  className="group cursor-pointer space-y-2.5"
+                >
+                  <div className="relative border border-sand bg-sand-light aspect-[4/3] overflow-hidden">
+                    <img
+                      src={photo.imageUrl}
+                      alt={photo.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-forest/0 group-hover:bg-forest/25 transition-colors flex items-center justify-center">
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-ivory text-forest p-2.5 shadow-md">
+                        <Maximize2 className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </div>
+                  <figcaption className="space-y-1">
+                    <div className="flex items-center justify-between text-[11px] font-sans text-charcoal-muted">
+                      <span className="font-semibold text-gold uppercase tracking-wider">{photo.category}</span>
+                      <span>{photo.date}</span>
+                    </div>
+                    <h3 className="font-heading font-bold text-sm sm:text-base text-forest group-hover:text-forest-light transition-colors leading-snug">
+                      {photo.title}
+                    </h3>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </>
+        )}
       </section>
 
       {/* Lightbox Modal */}
@@ -207,49 +220,51 @@ export default function GaleriPage() {
         </div>
       )}
 
-      {/* Video Section (Sand Block Separation) */}
-      <section className="bg-sand-light/60 border-t border-sand py-10 sm:py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-sand pb-3">
-            <div>
-              <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
-                Liputan Video
-              </span>
-              <h2 className="font-heading text-xl sm:text-3xl font-bold text-forest mt-0.5">
-                Video Kegiatan Sekolah
-              </h2>
-            </div>
-            <p className="font-sans text-xs sm:text-sm text-charcoal-muted max-w-md">
-              Tayangan dokumentasi profil sekolah dan kegiatan pembelajaran siswa.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {DUMMY_VIDEOS.map((video) => (
-              <div key={video.id} className="bg-ivory border border-sand space-y-3 p-3">
-                <div className="relative w-full aspect-video bg-forest-dark">
-                  <iframe
-                    className="w-full h-full"
-                    src={`https://www.youtube.com/embed/${video.youtubeId}`}
-                    title={video.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-                <div className="px-1 pb-1 space-y-1">
-                  <div className="flex items-center justify-between text-[11px] font-sans text-charcoal-muted">
-                    <span className="font-semibold text-gold uppercase tracking-wider">{video.category}</span>
-                    <span>{video.date}</span>
-                  </div>
-                  <h3 className="font-heading font-bold text-sm text-forest leading-snug">
-                    {video.title}
-                  </h3>
-                </div>
+      {/* Video Section (Auto-hidden when empty) */}
+      {DUMMY_VIDEOS.length > 0 && (
+        <section className="bg-sand-light/60 border-t border-sand py-10 sm:py-14">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-sand pb-3">
+              <div>
+                <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
+                  Liputan Video
+                </span>
+                <h2 className="font-heading text-xl sm:text-3xl font-bold text-forest mt-0.5">
+                  Video Kegiatan Sekolah
+                </h2>
               </div>
-            ))}
+              <p className="font-sans text-xs sm:text-sm text-charcoal-muted max-w-md">
+                Tayangan dokumentasi profil sekolah dan kegiatan pembelajaran siswa.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {DUMMY_VIDEOS.map((video) => (
+                <div key={video.id} className="bg-ivory border border-sand space-y-3 p-3">
+                  <div className="relative w-full aspect-video bg-forest-dark">
+                    <iframe
+                      className="w-full h-full"
+                      src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                      title={video.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                  <div className="px-1 pb-1 space-y-1">
+                    <div className="flex items-center justify-between text-[11px] font-sans text-charcoal-muted">
+                      <span className="font-semibold text-gold uppercase tracking-wider">{video.category}</span>
+                      <span>{video.date}</span>
+                    </div>
+                    <h3 className="font-heading font-bold text-sm text-forest leading-snug">
+                      {video.title}
+                    </h3>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
     </div>
   );

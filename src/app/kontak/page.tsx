@@ -14,6 +14,7 @@ import {
   AlertCircle,
   ExternalLink,
 } from "lucide-react";
+import { SCHOOL_CONFIG, getWhatsAppUrl } from "@/data/school";
 
 export default function KontakPage() {
   const [formData, setFormData] = useState({
@@ -69,6 +70,10 @@ export default function KontakPage() {
     setIsSubmitted(false);
   };
 
+  const waDirectUrl = getWhatsAppUrl(
+    `Assalamu'alaikum Sekretariat ${SCHOOL_CONFIG.name}, saya ingin menjadwalkan kunjungan atau bertanya mengenai sekolah.`
+  );
+
   return (
     <div className="space-y-10 sm:space-y-14 pb-12 sm:pb-16">
       
@@ -93,10 +98,20 @@ export default function KontakPage() {
                   Hubungi Kami & Kunjungan
                 </h1>
               </div>
-              <div className="lg:col-span-5">
+              <div className="lg:col-span-5 space-y-3">
                 <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
-                  Layanan informasi sekolah, penjadwalan kunjungan orang tua, serta kanal resmi komunikasi SDIT [Nama Sekolah].
+                  Untuk respons tercepat, orang tua dapat menghubungi WhatsApp Sekretariat {SCHOOL_CONFIG.name} secara langsung pada jam kerja.
                 </p>
+                <a
+                  href={waDirectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 font-sans font-semibold text-xs uppercase tracking-wider text-ivory bg-forest hover:bg-forest-light transition-colors"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-gold" />
+                  <span>Chat WhatsApp Sekarang</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
               </div>
             </div>
           </div>
@@ -107,9 +122,29 @@ export default function KontakPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
-          {/* Left: Clean Contact Directory (5 cols) */}
           <div className="lg:col-span-5 divide-y divide-sand border-y border-sand">
-            
+            <div className="py-4 flex items-start gap-3.5">
+              <Phone className="w-4 h-4 text-gold shrink-0 mt-1" />
+              <div className="space-y-1.5">
+                <h2 className="font-sans font-bold text-xs uppercase tracking-wider text-forest">
+                  WhatsApp & Telepon (Kanal Utama)
+                </h2>
+                <p className="font-sans text-xs sm:text-sm text-charcoal font-medium">
+                  {SCHOOL_CONFIG.contact.whatsappDisplay} (WhatsApp) / {SCHOOL_CONFIG.contact.phone}
+                </p>
+                <a
+                  href={waDirectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 font-sans font-semibold text-xs text-ivory bg-forest hover:bg-forest-light transition-colors"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-gold" />
+                  <span>Buka Chat WhatsApp</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+
             <div className="py-4 flex items-start gap-3.5">
               <MapPin className="w-4 h-4 text-gold shrink-0 mt-1" />
               <div className="space-y-1">
@@ -117,30 +152,8 @@ export default function KontakPage() {
                   Alamat Sekolah
                 </h2>
                 <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
-                  Jl. Pendidikan Islam No. 123, Kelurahan Mulia, Kota Bandung 40123
+                  {SCHOOL_CONFIG.contact.address}
                 </p>
-              </div>
-            </div>
-
-            <div className="py-4 flex items-start gap-3.5">
-              <Phone className="w-4 h-4 text-gold shrink-0 mt-1" />
-              <div className="space-y-1.5">
-                <h2 className="font-sans font-bold text-xs uppercase tracking-wider text-forest">
-                  Telepon & WhatsApp
-                </h2>
-                <p className="font-sans text-xs sm:text-sm text-charcoal font-medium">
-                  (021) 1234-5678 / 0812-3456-7890
-                </p>
-                <a
-                  href="https://wa.me/6281234567890"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 font-sans font-semibold text-xs text-ivory bg-forest hover:bg-forest-light transition-colors"
-                >
-                  <MessageCircle className="w-3.5 h-3.5 text-gold" />
-                  <span>Chat WhatsApp Sekretariat</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
               </div>
             </div>
 
@@ -151,7 +164,7 @@ export default function KontakPage() {
                   Email Resmi
                 </h2>
                 <p className="font-sans text-xs sm:text-sm text-charcoal-muted">
-                  info@sdit-sekolah.sch.id
+                  {SCHOOL_CONFIG.contact.email}
                 </p>
               </div>
             </div>
@@ -163,10 +176,10 @@ export default function KontakPage() {
                   Jam Layanan Kantor
                 </h2>
                 <p className="font-sans text-xs sm:text-sm text-charcoal-muted">
-                  Senin s.d. Jumat, pukul 07.00 - 15.30 WIB
+                  {SCHOOL_CONFIG.contact.hoursWeekday}
                 </p>
                 <p className="font-sans text-xs text-charcoal-muted">
-                  Sabtu, pukul 08.00 - 12.00 WIB
+                  {SCHOOL_CONFIG.contact.hoursSaturday}
                 </p>
               </div>
             </div>
@@ -176,25 +189,23 @@ export default function KontakPage() {
                 Kanal Media Sosial
               </h2>
               <div className="flex flex-wrap gap-4 text-xs font-sans font-semibold text-forest">
-                <a href="#" className="hover:text-gold transition-colors underline underline-offset-4 decoration-sand-dark">
-                  Instagram (@sdit.sekolah)
+                <a href={SCHOOL_CONFIG.social.instagramUrl} className="hover:text-gold transition-colors underline underline-offset-4 decoration-sand-dark">
+                  Instagram ({SCHOOL_CONFIG.social.instagramHandle})
                 </a>
-                <a href="#" className="hover:text-gold transition-colors underline underline-offset-4 decoration-sand-dark">
+                <a href={SCHOOL_CONFIG.social.facebookUrl} className="hover:text-gold transition-colors underline underline-offset-4 decoration-sand-dark">
                   Facebook Page
                 </a>
-                <a href="#" className="hover:text-gold transition-colors underline underline-offset-4 decoration-sand-dark">
+                <a href={SCHOOL_CONFIG.social.youtubeUrl} className="hover:text-gold transition-colors underline underline-offset-4 decoration-sand-dark">
                   YouTube Channel
                 </a>
               </div>
             </div>
-
           </div>
 
-          {/* Right: Crisp Map Embed (7 cols) */}
           <div className="lg:col-span-7 space-y-2.5">
             <div className="w-full h-80 sm:h-[420px] border border-sand bg-sand-light overflow-hidden">
               <iframe
-                title="Peta Lokasi SDIT [Nama Sekolah]"
+                title={`Peta Lokasi ${SCHOOL_CONFIG.name}`}
                 className="w-full h-full border-0"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56347862248!2d107.5731168!3d-6.9034443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a1f93d3e815b2!2sBandung%2C%20Kota%20Bandung%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
                 allowFullScreen
@@ -203,27 +214,27 @@ export default function KontakPage() {
               ></iframe>
             </div>
             <p className="text-xs font-sans text-charcoal-muted">
-              Lokasi peta sebagai ilustrasi sementara. Silakan konfirmasi terlebih dahulu sebelum melakukan kunjungan langsung ke sekolah.
+              Lokasi peta sebagai ilustrasi sementara. Silakan konfirmasi via WhatsApp sebelum melakukan kunjungan langsung ke sekolah.
             </p>
           </div>
 
         </div>
       </section>
 
-      {/* Direct Message / Visit Request Form (Sand Band) */}
-      <section className="bg-sand-light/60 border-y border-sand py-10 sm:py-14">
+      {/* Visit / Message Form */}
+      <section id="kunjungan" className="bg-sand-light/60 border-y border-sand py-10 sm:py-14 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
             <div className="lg:col-span-5 space-y-3">
               <span className="text-[11px] font-sans font-bold tracking-widest text-gold uppercase">
-                Formulir Pesan
+                Formulir Kunjungan & Pesan
               </span>
               <h2 className="font-heading text-2xl sm:text-3xl font-bold text-forest leading-snug">
-                Kirim Pesan atau Ajukan Jadwal Kunjungan
+                Ajukan Jadwal Kunjungan atau Pesan Tertulis
               </h2>
               <p className="font-sans text-xs sm:text-sm text-charcoal-muted leading-relaxed">
-                Gunakan formulir ini untuk menyampaikan pertanyaan seputar kurikulum, kegiatan siswa, atau menjadwalkan kunjungan keluarga ke sekolah pada jam kerja.
+                Selain melalui WhatsApp, Bapak/Ibu juga dapat mengisi formulir singkat ini untuk menjadwalkan kunjungan keluarga atau mengajukan pertanyaan resmi via email.
               </p>
             </div>
 
@@ -302,7 +313,7 @@ export default function KontakPage() {
                       name="subjek"
                       value={formData.subjek}
                       onChange={handleChange}
-                      placeholder="Contoh: Jadwal Kunjungan / Informasi Kurikulum"
+                      placeholder="Contoh: Jadwal Kunjungan Sekolah / Informasi Kurikulum"
                       className={`w-full px-3.5 py-2.5 border bg-ivory-light text-xs sm:text-sm font-sans focus:outline-none ${
                         errors.subjek ? "border-red-500" : "border-sand focus:border-forest"
                       }`}
@@ -323,7 +334,7 @@ export default function KontakPage() {
                       rows={4}
                       value={formData.pesan}
                       onChange={handleChange}
-                      placeholder="Tuliskan pertanyaan atau rencana kunjungan Anda..."
+                      placeholder="Tuliskan pertanyaan atau rencana hari/jam kunjungan Anda..."
                       className={`w-full p-3.5 border bg-ivory-light text-xs sm:text-sm font-sans focus:outline-none ${
                         errors.pesan ? "border-red-500" : "border-sand focus:border-forest"
                       }`}
